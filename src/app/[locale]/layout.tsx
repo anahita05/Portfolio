@@ -11,8 +11,8 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "Portfolio — Creative Designer & Visual Artist",
-  description: "Portfolio of selected works, services and commissions in white, sky blue and gold",
+  title: "Seraphina Atelier — Dreamy Character Portfolio",
+  description: "Premium soft-fantasy art atelier: characters, illustrations, concept art and commissions",
 };
 
 export function generateStaticParams() {
@@ -47,7 +47,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <div className="flex min-h-screen">
             <Navbar />
-            <div className="flex min-h-screen flex-1 flex-col lg:pl-60">
+            <div className="flex min-h-screen flex-1 flex-col lg:pl-[18rem]">
               <main className="flex-1">{children}</main>
               <Footer />
             </div>

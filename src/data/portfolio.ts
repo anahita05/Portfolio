@@ -33,19 +33,7 @@ export type ServiceItem = {
   priceKey: string;
 };
 
-export type StepItem = {
-  n: string;
-  titleKey: string;
-  descKey: string;
-};
-
 export const heroImage = "/images/main.png";
-
-export const heroStats: Array<[string, string]> = [
-  ["stat1N", "stat1L"],
-  ["stat2N", "stat2L"],
-  ["stat3N", "stat3L"],
-];
 
 export const breakdown: BreakdownItem[] = [
   { icon: Gem, titleKey: "card1T", descKey: "card1D", tagKey: "card1Tag" },
@@ -92,13 +80,6 @@ export const services: ServiceItem[] = [
   { icon: Palette, titleKey: "srv4T", descKey: "srv4D", priceKey: "srv4P" },
 ];
 
-export const steps: StepItem[] = [
-  { n: "01", titleKey: "step1T", descKey: "step1D" },
-  { n: "02", titleKey: "step2T", descKey: "step2D" },
-  { n: "03", titleKey: "step3T", descKey: "step3D" },
-  { n: "04", titleKey: "step4T", descKey: "step4D" },
-];
-
 // Plain-English fallback (used if a translation key is missing).
 // Keep this in sync with messages/en.json -> Portfolio.
 export const portfolioFallback = {
@@ -111,11 +92,6 @@ export const portfolioFallback = {
   ctaWork: "View selected works",
   ctaContact: "Get in touch",
   note: "Hero art: public/images/main.png (transparent PNG)",
-  stat1N: "+120",
-  stat1L: "projects delivered",
-  stat2N: "6 yrs",
-  stat2L: "design experience",
-  stat3N: "40+",
-  stat3L: "happy clients",
-  marquee: "branding • illustration • character design • visual identity • commissions • art direction",
+  marquee:
+    "branding • illustration • character design • visual identity • commissions • art direction",
 };
