@@ -10,8 +10,8 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "Next.js Bilingual Template",
-  description: "A production-ready bilingual Next.js template",
+  title: "Seraphina Atelier — Fallen Angel Portfolio",
+  description: "Soft fantasy character designer portfolio in ivory, cream and gold",
 };
 
 export function generateStaticParams() {
@@ -43,6 +43,10 @@ export default async function LocaleLayout({
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap"
         />
         <ThemeInitializer />
       </head>

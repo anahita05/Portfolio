@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-export type ThemeName = "navy" | "pink";
+export type ThemeName = "angel" | "navy" | "pink";
 
 interface ThemeState {
   theme: ThemeName;
@@ -14,13 +14,15 @@ interface ThemeState {
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set, get) => ({
-      theme: "navy",
+      theme: "angel",
 
       setTheme: (theme) => set({ theme }),
 
       toggleTheme: () => {
         const current = get().theme;
-        set({ theme: current === "navy" ? "pink" : "navy" });
+        const order: ThemeName[] = ["angel", "navy", "pink"];
+        const next = order[(order.indexOf(current) + 1) % order.length];
+        set({ theme: next });
       },
     }),
     {

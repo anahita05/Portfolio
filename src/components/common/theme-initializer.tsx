@@ -3,7 +3,7 @@ export function ThemeInitializer() {
     (function () {
       try {
         var raw = localStorage.getItem("app-theme-storage");
-        var theme = "navy";
+        var theme = "angel";
         if (raw) {
           var parsed = JSON.parse(raw);
           if (parsed && parsed.state && parsed.state.theme) {
@@ -12,7 +12,7 @@ export function ThemeInitializer() {
         }
         document.documentElement.setAttribute("data-theme", theme);
       } catch (e) {
-        document.documentElement.setAttribute("data-theme", "navy");
+        document.documentElement.setAttribute("data-theme", "angel");
       }
     })();
   `;

@@ -1,6 +1,42 @@
 @import "tailwindcss";
 
 :root,
+[data-theme="angel"] {
+  --background: 42 38% 93%;
+  --foreground: 20 18% 22%;
+
+  --card: 45 100% 99%;
+  --card-foreground: 20 18% 22%;
+
+  --primary: 38 38% 46%;
+  --primary-foreground: 45 100% 98%;
+  --primary-50: 43 55% 96%;
+  --primary-100: 42 50% 90%;
+  --primary-200: 40 45% 81%;
+  --primary-300: 39 42% 70%;
+  --primary-400: 38 40% 58%;
+  --primary-500: 38 38% 46%;
+  --primary-600: 36 38% 38%;
+  --primary-700: 34 36% 30%;
+  --primary-800: 28 32% 22%;
+  --primary-900: 22 30% 16%;
+
+  --secondary: 40 30% 89%;
+  --secondary-foreground: 20 18% 22%;
+
+  --muted: 38 22% 89%;
+  --muted-foreground: 28 14% 46%;
+
+  --border: 38 25% 83%;
+  --input: 38 25% 83%;
+  --ring: 38 38% 46%;
+
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+
+  --radius: 1rem;
+}
+
 [data-theme="navy"] {
   --background: 225 20% 85%;
   --foreground: 222 47% 11%;
@@ -139,4 +175,29 @@ body {
       0% at var(--theme-transition-x) var(--theme-transition-y)
     );
   }
+}
+
+/* ---- Angel portfolio skin ---- */
+.font-display {
+  font-family: "Cormorant Garamond", "Vazirmatn", Georgia, serif;
+  letter-spacing: -0.01em;
+}
+.paper-grain {
+  background-image:
+    radial-gradient(ellipse 60% 50% at 15% 10%, rgba(185, 151, 91, 0.14), transparent 60%),
+    radial-gradient(ellipse 50% 45% at 85% 15%, rgba(232, 180, 160, 0.16), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(154, 123, 63, 0.1), transparent 65%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+.sketch-border {
+  border: 1px solid hsl(var(--border));
+  outline: 1px dashed rgba(154, 123, 63, 0.35);
+  outline-offset: 5px;
+}
+.handwritten {
+  font-family: "Segoe Script", "Vazirmatn", cursive;
+  font-style: italic;
+}
+html {
+  scroll-behavior: smooth;
 }

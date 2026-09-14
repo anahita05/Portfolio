@@ -38,7 +38,9 @@ export function ThemeSwitcher() {
   const toggleThemeWithAnimation = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
-    const nextTheme = theme === "navy" ? "pink" : "navy";
+    const order = ["angel", "navy", "pink"] as const;
+    const nextTheme =
+      order[(order.indexOf(theme as (typeof order)[number]) + 1) % order.length] ?? "angel";
     const root = document.documentElement;
     const el = event.currentTarget;
 
@@ -56,7 +58,7 @@ export function ThemeSwitcher() {
 
     root.style.setProperty("--theme-transition-x", `${x}%`);
     root.style.setProperty("--theme-transition-y", `${y}%`);
-    root.dataset.themeTransition = nextTheme === "navy" ? "to-navy" : "to-pink";
+    root.dataset.themeTransition = `to-${nextTheme}`;
 
     const transition = document.startViewTransition(() => {
       setTheme(nextTheme);
@@ -81,7 +83,7 @@ export function ThemeSwitcher() {
       size="icon"
       onClick={toggleThemeWithAnimation}
       aria-label={t("switchLabel")}
-      title={theme === "navy" ? t("pink") : t("navy")}
+      title={t(theme)}
       className="animate-theme-pulse"
     >
       <Palette className="h-5 w-5" />
