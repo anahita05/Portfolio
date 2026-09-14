@@ -110,15 +110,16 @@
 }
 
 body {
-  background-color: hsl(var(--background));
+  background-color: transparent;
   color: hsl(var(--foreground));
+  font-family: var(--font-body), "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
   transition:
     background-color 0.35s ease,
     color 0.35s ease;
 }
 
 [dir="rtl"] body {
-  font-family: "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-body), "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
 }
 
 ::view-transition-group(root) {
@@ -179,7 +180,7 @@ body {
 
 /* ---- Angel portfolio skin ---- */
 .font-display {
-  font-family: "Cormorant Garamond", "Vazirmatn", Georgia, serif;
+  font-family: var(--font-display), var(--font-body), Georgia, serif;
   letter-spacing: -0.01em;
 }
 .paper-grain {
@@ -195,9 +196,102 @@ body {
   outline-offset: 5px;
 }
 .handwritten {
-  font-family: "Segoe Script", "Vazirmatn", cursive;
+  font-family: var(--font-display), var(--font-body), cursive;
   font-style: italic;
 }
 html {
   scroll-behavior: smooth;
+}
+
+/* ---- Animated sky portfolio background ----
+   White + sky blue + golden. Fixed layer so it keeps moving even on scroll. */
+.sky-scene {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(
+    120deg,
+    #ffffff 0%,
+    #e0f2fe 22%,
+    #bae6fd 38%,
+    #fef9e7 55%,
+    #f5d67b 72%,
+    #e0f2fe 88%,
+    #ffffff 100%
+  );
+  background-size: 300% 300%;
+  animation: sky-drift 18s ease-in-out infinite;
+}
+
+.sky-scene::before,
+.sky-scene::after {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.65;
+}
+
+.sky-scene::before {
+  width: 44rem;
+  height: 44rem;
+  left: -12rem;
+  top: -14rem;
+  background: radial-gradient(circle, rgba(186, 230, 253, 0.9), transparent 65%);
+  animation: orb-float-a 14s ease-in-out infinite alternate;
+}
+
+.sky-scene::after {
+  width: 40rem;
+  height: 40rem;
+  right: -10rem;
+  bottom: -12rem;
+  background: radial-gradient(circle, rgba(245, 214, 123, 0.85), transparent 65%);
+  animation: orb-float-b 17s ease-in-out infinite alternate;
+}
+
+.sky-clouds {
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    radial-gradient(ellipse 32rem 12rem at 20% 30%, rgba(255, 255, 255, 0.9), transparent 70%),
+    radial-gradient(ellipse 28rem 10rem at 75% 22%, rgba(255, 255, 255, 0.75), transparent 70%),
+    radial-gradient(ellipse 36rem 14rem at 55% 70%, rgba(224, 242, 254, 0.8), transparent 70%),
+    radial-gradient(ellipse 24rem 10rem at 85% 80%, rgba(254, 249, 231, 0.9), transparent 70%);
+  animation: clouds-pan 26s linear infinite alternate;
+}
+
+@keyframes sky-drift {
+  0% { background-position: 0% 40%; }
+  50% { background-position: 100% 60%; }
+  100% { background-position: 0% 40%; }
+}
+
+@keyframes orb-float-a {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(6rem, 4rem) scale(1.15); }
+}
+
+@keyframes orb-float-b {
+  from { transform: translate(0, 0) scale(1.1); }
+  to { transform: translate(-5rem, -4rem) scale(0.95); }
+}
+
+@keyframes clouds-pan {
+  from { transform: translateX(-3%) translateY(0); }
+  to { transform: translateX(3%) translateY(-2%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sky-scene,
+  .sky-clouds,
+  .sky-scene::before,
+  .sky-scene::after {
+    animation: none;
+  }
 }

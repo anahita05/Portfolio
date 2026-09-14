@@ -5,13 +5,14 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
+import { portfolioFontClass } from "../fonts/portfolio-font";
 import { ThemeInitializer } from "@/components/common/theme-initializer";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "Seraphina Atelier — Fallen Angel Portfolio",
-  description: "Soft fantasy character designer portfolio in ivory, cream and gold",
+  title: "Portfolio — Creative Designer & Visual Artist",
+  description: "Portfolio of selected works, services and commissions in white, sky blue and gold",
 };
 
 export function generateStaticParams() {
@@ -40,22 +41,16 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={dir}>
       <head>
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap"
-        />
         <ThemeInitializer />
       </head>
-      <body className="min-h-screen antialiased">
+      <body className={`${portfolioFontClass} min-h-screen antialiased`}>
         <NextIntlClientProvider messages={messages}>
-          <div className="flex min-h-screen flex-col">
+          <div className="flex min-h-screen">
             <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
+            <div className="flex min-h-screen flex-1 flex-col lg:pl-60">
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
           </div>
         </NextIntlClientProvider>
       </body>
