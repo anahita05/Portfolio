@@ -87,13 +87,6 @@ public/images/main.png
 - Themes: CSS variables for `[data-theme="angel"|"navy"|"pink"]` in `src/app/globals.css`
 - Gallery: add/remove items in `src/data/atelier.ts` + matching `g*T` / `g*M` keys in messages
 
-## Contact
-
-- Email: anahita.sllp2000@gmail.com
-- Phone: +98 930 240 7515
-- GitHub: github.com/anahita05
-- Location: Karaj, Iran — open to front-end roles, internships and freelance
-
 ## Deploy
 
 Any Node host works. Vercel recommended:
