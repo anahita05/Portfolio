@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Feather, Heart, Globe, Mail, Send } from "lucide-react";
+import { Cloud, Star, Heart, Globe, Mail, Send } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 export function Footer() {
@@ -23,7 +23,11 @@ export function Footer() {
           <div>
             <p className="flex items-center gap-2 text-lg font-bold">
               <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#f5d67b] text-[#2e2620]">
-                <Feather className="h-5 w-5" />
+                <span className="relative flex items-center justify-center">
+                  <Cloud className="h-5 w-5" />
+                  <Star className="absolute -top-2 -right-2 h-3 w-3 fill-current" />
+                  <Star className="absolute -bottom-1 -left-2 h-2.5 w-2.5 fill-current" />
+                </span>
               </span>
               <span className="font-display text-2xl">{nav("brand")}</span>
             </p>

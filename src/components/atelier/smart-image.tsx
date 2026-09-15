@@ -4,6 +4,10 @@ import * as React from "react";
 import { motion, type MotionStyle } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import PixelCard from "@/components/PixelCard";
+
+/** Atelier-tinted pixel palette: gold + rose + cream + blush. */
+const DEFAULT_PIXEL_COLORS = "#f5d67b,#e8b4a0,#c9a13a,#f9dbe3";
 
 type SmartImageProps = {
   src: string;
@@ -18,6 +22,10 @@ type SmartImageProps = {
   ariaHidden?: boolean;
   /** when provided, renders a motion.img with parallax style (e.g. { y }) */
   motionStyle?: MotionStyle;
+  /** overlay a continuously-shimmering React-Bits PixelCard canvas over the image */
+  withPixels?: boolean;
+  /** pixel palette (comma-separated colors) */
+  pixelColors?: string;
 };
 
 /**
@@ -33,6 +41,8 @@ export function SmartImage({
   loading = "lazy",
   ariaHidden,
   motionStyle,
+  withPixels = false,
+  pixelColors = DEFAULT_PIXEL_COLORS,
 }: SmartImageProps) {
   const [loaded, setLoaded] = React.useState(false);
   const imgRef = React.useRef<HTMLImageElement | null>(null);
@@ -89,6 +99,16 @@ export function SmartImage({
             loaded ? "opacity-100" : "opacity-0",
             imgClassName,
           )}
+        />
+      )}
+      {withPixels && (
+        <PixelCard
+          autoPlay
+          noFocus
+          gap={8}
+          speed={30}
+          colors={pixelColors}
+          className="pixel-frame-overlay"
         />
       )}
     </div>

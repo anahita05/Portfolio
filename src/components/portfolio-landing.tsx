@@ -188,15 +188,6 @@ export function PortfolioLanding() {
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className="relative"
             >
-              {/* halo */}
-              <div
-                className="absolute inset-x-6 top-6 bottom-0 rounded-[3rem] blur-2xl"
-                aria-hidden="true"
-                style={{
-                  background:
-                    "radial-gradient(circle at 50% 25%, rgba(245,214,123,0.55), transparent 60%), radial-gradient(circle at 80% 70%, rgba(249,219,227,0.6), transparent 60%), radial-gradient(circle at 15% 75%, rgba(217,233,212,0.55), transparent 60%)",
-                }}
-              />
               <SmartImage
                 src={HERO_IMG}
                 alt="fallen angel hero"
@@ -215,6 +206,7 @@ export function PortfolioLanding() {
                 <SmartImage
                   src={HERO_IMG}
                   alt="face study"
+                  withPixels
                   wrapperClassName="aspect-square w-full"
                   imgClassName="scale-[1.9] object-top"
                 />
@@ -232,6 +224,7 @@ export function PortfolioLanding() {
                 <SmartImage
                   src={HERO_IMG}
                   alt="wing study"
+                  withPixels
                   wrapperClassName="aspect-[4/3] w-full"
                   imgClassName="scale-[1.7] object-right"
                 />
@@ -338,6 +331,7 @@ export function PortfolioLanding() {
                   <SmartImage
                     src={HERO_IMG}
                     alt={f.title}
+                    withPixels
                     wrapperClassName="absolute inset-0"
                     imgClassName={`transition-transform duration-700 group-hover:scale-110 ${f.img}`}
                   />
@@ -380,46 +374,6 @@ export function PortfolioLanding() {
         </Reveal>
       </section>
 
-      {/* ============ MARGIN NOTES ============ */}
-      <section className="relative mx-auto max-w-6xl px-6 pt-20">
-        <SectionHeading
-          index="03"
-          eyebrow={tx("worksKicker")}
-          title={tx("worksTitle")}
-          copy={tx("worksDesc")}
-        />
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3, 4, 5, 6].map((i) => {
-            const Icon = breakdownIcons[i - 1];
-            return (
-              <Reveal key={i} delay={(i % 3) * 0.08}>
-                <Card className="group rounded-[2rem] border-white/70 bg-white/75 shadow-sm backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:rotate-[0.4deg] hover:shadow-xl">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#fdf6e3] via-[#f9dbe3] to-[#d9e9d4] text-[#5a4a33] shadow-inner transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                        <Icon className="h-5 w-5" />
-                      </span>
-                      <span className="font-display text-sm text-muted-foreground italic">
-                        0{i}
-                      </span>
-                    </div>
-                    <CardTitle className="font-display mt-4 text-xl">
-                      {tx(`card${i}T`)}
-                    </CardTitle>
-                    <CardDescription className="leading-7">
-                      {tx(`card${i}D`)}
-                    </CardDescription>
-                    <p className="handwritten mt-2 text-xs text-primary-600">
-                      ↳ {tx(`card${i}Tag`)}
-                    </p>
-                  </CardHeader>
-                </Card>
-              </Reveal>
-            );
-          })}
-        </div>
-      </section>
-
       {/* ============ ABOUT ============ */}
       <section
         id="about"
@@ -440,6 +394,7 @@ export function PortfolioLanding() {
                 <SmartImage
                   src={HERO_IMG}
                   alt="artist"
+                  withPixels
                   wrapperClassName="aspect-[4/5] w-full rounded-[1.4rem]"
                   imgClassName="object-top"
                 />
@@ -472,52 +427,84 @@ export function PortfolioLanding() {
                 ),
               )}
             </div>
-            <div className="mt-6 space-y-3">
+            <div className="mt-6 grid gap-3">
               {[
                 {
                   label: tx("skill1"),
-                  w: "92%",
-                  tint: "from-[#c9a13a] to-[#f5d67b]",
+                  pct: 92,
+                  dot: "bg-[#c9a13a]",
+                  seg: "bg-[#c9a13a]",
+                  badge:
+                    "border-[#ecd27a] bg-[#fdf3d0] text-[#7a5c14]",
                 },
                 {
                   label: tx("skill2"),
-                  w: "84%",
-                  tint: "from-[#b0526b] to-[#f3b8c8]",
+                  pct: 84,
+                  dot: "bg-[#b0526b]",
+                  seg: "bg-[#b0526b]",
+                  badge:
+                    "border-[#efb3c3] bg-[#fbe4ea] text-[#8a2f47]",
                 },
                 {
                   label: tx("skill3"),
-                  w: "76%",
-                  tint: "from-[#5a7a54] to-[#bcd6b4]",
+                  pct: 76,
+                  dot: "bg-[#5a7a54]",
+                  seg: "bg-[#5a7a54]",
+                  badge:
+                    "border-[#bcd6b4] bg-[#e3efe1] text-[#3c5a38]",
                 },
-              ].map((s) => (
-                <div key={s.label}>
-                  <div className="mb-1 flex justify-between text-xs font-bold">
-                    <span>{s.label}</span>
-                    <span className="text-muted-foreground">{s.w}</span>
+              ].map((s, idx) => {
+                const total = 20;
+                const filled = Math.round((s.pct / 100) * total);
+                return (
+                  <div
+                    key={s.label}
+                    className="rounded-2xl border border-white/70 bg-white/70 px-4 py-3 shadow-sm backdrop-blur"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        className={`h-2.5 w-2.5 rounded-full shadow ${s.dot}`}
+                      />
+                      <span className="text-sm font-bold">{s.label}</span>
+                      <span
+                        className={`ml-auto rounded-full border px-2.5 py-0.5 text-[11px] font-bold ${s.badge}`}
+                      >
+                        {s.pct}%
+                      </span>
+                    </div>
+                    <div className="mt-2.5 flex gap-1" aria-hidden="true">
+                      {Array.from({ length: total }).map((_, j) => (
+                        <motion.span
+                          key={j}
+                          initial={{ opacity: 0, scale: 0.6 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{
+                            delay: idx * 0.1 + j * 0.02,
+                            duration: 0.25,
+                          }}
+                          className={`h-2.5 flex-1 rounded-[6px] ${
+                            j < filled ? s.seg : "bg-foreground/10"
+                          }`}
+                        />
+                      ))}
+                    </div>
                   </div>
-                  <div className="h-2.5 overflow-hidden rounded-full bg-white/80">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: s.w }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                      className={`h-full rounded-full bg-gradient-to-r ${s.tint}`}
-                    />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* ============ SERVICES + PROCESS ============ */}
+      {/* ============ SERVICES + EXPERIENCE (combined) ============ */}
       <section
         id="services"
         className="relative mx-auto max-w-6xl scroll-mt-28 px-6 pt-20"
       >
+        <span id="works" className="absolute -top-24" aria-hidden="true" />
         <SectionHeading
-          index="04"
+          index="03"
           eyebrow={tx("servicesKicker")}
           title={tx("servicesTitle")}
           copy={tx("servicesDesc")}
@@ -534,6 +521,7 @@ export function PortfolioLanding() {
                     src={HERO_IMG}
                     alt=""
                     ariaHidden
+                    withPixels
                     wrapperClassName="absolute inset-0"
                     imgClassName={`opacity-90 transition-transform duration-700 group-hover:scale-110 ${s.crop}`}
                   />
@@ -561,6 +549,50 @@ export function PortfolioLanding() {
               </Card>
             </Reveal>
           ))}
+        </div>
+
+        {/* ---- Experience & certificates (same section) ---- */}
+        <div className="mt-16 text-center">
+          <Badge variant="outline" className="bg-white/70">
+            <span className="font-display italic">✦</span>
+            <span className="mx-1">{tx("worksKicker")}</span>
+          </Badge>
+          <h3 className="font-display mt-4 text-3xl font-semibold text-balance sm:text-4xl">
+            {tx("worksTitle")}
+          </h3>
+          <p className="mx-auto mt-3 max-w-2xl leading-8 text-muted-foreground">
+            {tx("worksDesc")}
+          </p>
+        </div>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3, 4, 5, 6].map((i) => {
+            const Icon = breakdownIcons[i - 1];
+            return (
+              <Reveal key={i} delay={(i % 3) * 0.08}>
+                <Card className="group rounded-[2rem] border-white/70 bg-white/75 shadow-sm backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:rotate-[0.4deg] hover:shadow-xl">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#fdf6e3] via-[#f9dbe3] to-[#d9e9d4] text-[#5a4a33] shadow-inner transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">
+                        <Icon className="h-5 w-5" />
+                      </span>
+                      <span className="font-display text-sm text-muted-foreground italic">
+                        0{i}
+                      </span>
+                    </div>
+                    <CardTitle className="font-display mt-4 text-xl">
+                      {tx(`card${i}T`)}
+                    </CardTitle>
+                    <CardDescription className="leading-7">
+                      {tx(`card${i}D`)}
+                    </CardDescription>
+                    <p className="handwritten mt-2 text-xs text-primary-600">
+                      ↳ {tx(`card${i}Tag`)}
+                    </p>
+                  </CardHeader>
+                </Card>
+              </Reveal>
+            );
+          })}
         </div>
       </section>
 

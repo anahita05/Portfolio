@@ -7,7 +7,6 @@ import { ThemeSwitcher } from "@/components/common/theme-switcher";
 import { LocaleSwitcher } from "@/components/common/locale-switcher";
 import { Button } from "@/components/ui/button";
 import { Sheet } from "@/components/ui/sheet";
-import { Tooltip } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
@@ -134,35 +133,34 @@ export function Navbar() {
             {links.map((l) => {
               const isActive = active === l.href;
               return (
-                <Tooltip key={l.href} tip={l.label}>
-                  <a
-                    href={l.href}
+                <a
+                  key={l.href}
+                  href={l.href}
+                  className={cn(
+                    "group flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-semibold transition-all duration-300",
+                    isActive
+                      ? "bg-[#2e2620] text-white shadow-md"
+                      : "text-foreground/80 hover:translate-x-1 hover:bg-white",
+                  )}
+                >
+                  <span
                     className={cn(
-                      "group flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-semibold transition-all duration-300",
-                      isActive
-                        ? "bg-[#2e2620] text-white shadow-md"
-                        : "text-foreground/80 hover:translate-x-1 hover:bg-white",
+                      "font-display w-7 text-xs italic",
+                      isActive ? "text-[#f5d67b]" : "text-muted-foreground",
                     )}
                   >
-                    <span
-                      className={cn(
-                        "font-display w-7 text-xs italic",
-                        isActive ? "text-[#f5d67b]" : "text-muted-foreground",
-                      )}
-                    >
-                      {l.hint}
-                    </span>
-                    {l.label}
-                    <span
-                      className={cn(
-                        "ml-auto h-1.5 w-1.5 rounded-full transition",
-                        isActive
-                          ? "bg-[#f5d67b]"
-                          : "bg-transparent group-hover:bg-primary-300",
-                      )}
-                    />
-                  </a>
-                </Tooltip>
+                    {l.hint}
+                  </span>
+                  {l.label}
+                  <span
+                    className={cn(
+                      "ml-auto h-1.5 w-1.5 rounded-full transition",
+                      isActive
+                        ? "bg-[#f5d67b]"
+                        : "bg-transparent group-hover:bg-primary-300",
+                    )}
+                  />
+                </a>
               );
             })}
           </nav>

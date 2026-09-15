@@ -63,6 +63,7 @@ export function ArtworkFrame({
         <SmartImage
           src={HERO_IMG}
           alt={title}
+          withPixels
           wrapperClassName="absolute inset-0"
           imgClassName={cn(
             "absolute inset-0 transition-all duration-700 ease-out group-hover:scale-[1.06] group-hover:rotate-[0.5deg]",
@@ -98,6 +99,7 @@ export function ArtworkFrame({
           <SmartImage
             src={HERO_IMG}
             alt={title}
+            withPixels
             wrapperClassName="relative min-h-[20rem]"
             imgClassName={cn("absolute inset-0", t.img)}
           />
