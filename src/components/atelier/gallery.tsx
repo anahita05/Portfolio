@@ -2,9 +2,7 @@
 
 import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Search } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
 import { galleryFilters, galleryItems, type GalleryCategory } from "@/data/atelier";
 import { ArtworkFrame } from "./artwork-frame";
 
@@ -14,17 +12,8 @@ export function Gallery({
   tx: (key: string) => string;
 }) {
   const [filter, setFilter] = React.useState<"all" | GalleryCategory>("all");
-  const [query, setQuery] = React.useState("");
   const items = galleryItems.filter((g) => {
-    const inFilter = filter === "all" || g.category === filter;
-    const q = query.trim().toLowerCase();
-    if (!q) return inFilter;
-    return (
-      inFilter &&
-      (tx(g.titleKey).toLowerCase().includes(q) ||
-        tx(g.metaKey).toLowerCase().includes(q) ||
-        g.year.includes(q))
-    );
+    return filter === "all" || g.category === filter;
   });
 
   return (
@@ -39,17 +28,6 @@ export function Gallery({
             ))}
           </TabsList>
         </Tabs>
-
-        <div className="relative w-full sm:max-w-xs">
-          <Search className="pointer-events-none absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search works…"
-            aria-label="Search works"
-            className="pl-10"
-          />
-        </div>
       </div>
 
       <motion.div layout className="mt-8 columns-1 gap-5 sm:columns-2 lg:columns-3 [&>*]:mb-5 [&>*]:break-inside-avoid">

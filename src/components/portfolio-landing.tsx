@@ -26,12 +26,6 @@ import {
   Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Atmosphere } from "@/components/atelier/atmosphere";
@@ -51,6 +45,14 @@ function useTx() {
   return React.useCallback(
     (key: string) => {
       try {
+        // `has` avoids throwing + avoids next-intl MISSING_MESSAGE console spam
+        const hasFn = (t as unknown as { has?: (k: string) => boolean }).has;
+        if (typeof hasFn === "function") {
+          if (!hasFn.call(t, key)) {
+            return (portfolioFallback as Record<string, string>)[key] ?? key;
+          }
+          return t(key);
+        }
         return t(key);
       } catch {
         return (portfolioFallback as Record<string, string>)[key] ?? key;
@@ -72,28 +74,31 @@ export function PortfolioLanding() {
   const cardAY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -60]);
   const cardBY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -110]);
 
-  const services = [1, 2, 3, 4, 5, 6].map((i) => ({
-    icon: serviceIcons[i - 1],
-    title: tx(`srv${i}T`),
-    desc: tx(`srv${i}D`),
-    price: tx(`srv${i}P`),
-    tint: [
-      "from-[#fdf6e3] to-[#f7ecc8]",
-      "from-[#fff1f3] to-[#f9dbe3]",
-      "from-[#f2f8f0] to-[#d9e9d4]",
-      "from-[#f4f0ff] to-[#ddd0f7]",
-      "from-[#fff7ed] to-[#fde4c8]",
-      "from-[#eef6ff] to-[#d5e7fb]",
-    ][i - 1],
-    crop: [
-      "object-top scale-100",
-      "object-top scale-[1.8]",
-      "object-center scale-[1.5]",
-      "object-center scale-125 saturate-[0.7]",
-      "object-top scale-[1.9]",
-      "object-left scale-[1.6]",
-    ][i - 1],
-  }));
+  const skillAccents = [
+    "#c9a13a",
+    "#b0526b",
+    "#5a7a54",
+    "#7a6fb5",
+    "#c97a3a",
+    "#4a7fa5",
+  ];
+
+  const skills = [
+    ...[1, 2, 3, 4, 5, 6].map((i) => ({
+      icon: serviceIcons[i - 1],
+      title: tx(`srv${i}T`),
+      desc: tx(`srv${i}D`),
+      tag: tx(`srv${i}P`),
+      accent: skillAccents[(i - 1) % skillAccents.length],
+    })),
+    ...[1, 2, 3, 4, 5, 6].map((i) => ({
+      icon: breakdownIcons[i - 1],
+      title: tx(`card${i}T`),
+      desc: tx(`card${i}D`),
+      tag: tx(`card${i}Tag`),
+      accent: skillAccents[(i + 2) % skillAccents.length],
+    })),
+  ];
 
   return (
     <div className="relative min-h-screen overflow-x-clip">
@@ -181,7 +186,7 @@ export function PortfolioLanding() {
           </motion.div>
 
           {/* art composition — overlapping, parallax, floating */}
-          <div className="relative mx-auto w-full max-w-[480px]">
+          <div className="relative mx-auto w-full max-w-120">
             <motion.div
               initial={{ opacity: 0, scale: 0.94, filter: "blur(10px)" }}
               animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
@@ -211,7 +216,7 @@ export function PortfolioLanding() {
                   imgClassName="scale-[1.9] object-top"
                 />
                 <p className="handwritten px-2 py-1.5 text-center text-[10px]">
-                  tired gaze ↘
+                  love design ↘
                 </p>
               </motion.div>
 
@@ -229,20 +234,20 @@ export function PortfolioLanding() {
                   imgClassName="scale-[1.7] object-right"
                 />
                 <p className="handwritten px-2 py-1.5 text-center text-[10px]">
-                  wing ↙ cream
+                  love design ♥
                 </p>
               </motion.div>
 
               {/* floating badges */}
               <motion.div
                 style={{ y: cardAY }}
-                className="absolute -top-2 right-4 z-20 rotate-[3deg] rounded-2xl border border-white/70 bg-white/85 px-4 py-2.5 shadow-lg backdrop-blur"
+                className="absolute -top-2 right-4 z-20 rotate-3 rounded-2xl border border-white/70 bg-white/85 px-4 py-2.5 shadow-lg backdrop-blur"
               >
                 <p className="flex items-center gap-1.5 text-xs font-bold">
-                  <Gem className="h-3.5 w-3.5 text-[#c9a13a]" /> gold jewelry
+                  <Gem className="h-3.5 w-3.5 text-[#c9a13a]" /> love design
                 </p>
                 <p className="handwritten mt-0.5 text-[11px] text-muted-foreground">
-                  layered chains ✦
+                  crafted with ♥ ✦
                 </p>
               </motion.div>
               <motion.div
@@ -250,18 +255,12 @@ export function PortfolioLanding() {
                 className="absolute bottom-8 -left-2 z-20 rotate-[-4deg] rounded-2xl border border-white/70 bg-white/85 px-4 py-2.5 shadow-lg backdrop-blur sm:-left-8"
               >
                 <p className="flex items-center gap-1.5 text-xs font-bold">
-                  <Eye className="h-3.5 w-3.5 text-[#b0526b]" /> tired eyes
+                  <Eye className="h-3.5 w-3.5 text-[#b0526b]" /> love details
                 </p>
                 <p className="handwritten mt-0.5 text-[11px] text-muted-foreground">
-                  tears + blush ♡
+                  made with love ♡
                 </p>
               </motion.div>
-
-              {/* caption strip */}
-              <div className="relative z-10 mx-8 -mt-4 flex items-center justify-between rounded-full border border-white/70 bg-white/80 px-5 py-2 text-[11px] text-muted-foreground shadow-md backdrop-blur">
-                <span>fig. 04 — drape & wings</span>
-                <span className="handwritten">chain details ⤴</span>
-              </div>
             </motion.div>
           </div>
         </div>
@@ -325,9 +324,9 @@ export function PortfolioLanding() {
           ].map((f, i) => (
             <Reveal key={f.title} delay={i * 0.1}>
               <figure
-                className={`group relative overflow-hidden rounded-[2rem] border border-white/70 bg-gradient-to-br ${f.bg} ${f.tilt} shadow-[0_25px_50px_-20px_rgba(90,60,50,0.4)] transition-all duration-500 hover:z-20 hover:scale-[1.03] hover:rotate-0`}
+                className={`group relative overflow-hidden rounded-4xl border border-white/70 bg-linear-to-br ${f.bg} ${f.tilt} shadow-[0_25px_50px_-20px_rgba(90,60,50,0.4)] transition-all duration-500 hover:z-20 hover:scale-[1.03] hover:rotate-0`}
               >
-                <div className="relative aspect-[4/5] overflow-hidden">
+                <div className="relative aspect-4/5 overflow-hidden">
                   <SmartImage
                     src={HERO_IMG}
                     alt={f.title}
@@ -335,7 +334,7 @@ export function PortfolioLanding() {
                     wrapperClassName="absolute inset-0"
                     imgClassName={`transition-transform duration-700 group-hover:scale-110 ${f.img}`}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#2e2620]/35 via-transparent to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-linear-to-t from-[#2e2620]/35 via-transparent to-transparent opacity-80" />
                   <span className="absolute top-4 left-4">
                     <Badge variant="pastel">{f.tag}</Badge>
                   </span>
@@ -385,12 +384,12 @@ export function PortfolioLanding() {
             aria-hidden="true"
           />
           <Reveal className="relative">
-            <div className="relative mx-auto max-w-[340px]">
+            <div className="relative mx-auto max-w-85">
               <div
-                className="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-br from-[#f5d67b]/50 via-[#f9dbe3]/60 to-[#d9e9d4]/60 blur-xl"
+                className="absolute -inset-4 rounded-[2.5rem] bg-linear-to-br from-[#f5d67b]/50 via-[#f9dbe3]/60 to-[#d9e9d4]/60 blur-xl"
                 aria-hidden="true"
               />
-              <div className="relative rotate-[-2deg] rounded-[2rem] border-8 border-white bg-white shadow-2xl transition-transform duration-500 hover:rotate-0">
+              <div className="relative -rotate-2 rounded-4xl border-8 border-white bg-white shadow-2xl transition-transform duration-500 hover:rotate-0">
                 <SmartImage
                   src={HERO_IMG}
                   alt="artist"
@@ -418,86 +417,11 @@ export function PortfolioLanding() {
             <blockquote className="font-display mt-5 rounded-3xl border border-white/70 bg-white/70 p-5 text-xl italic backdrop-blur">
               {tx("philText")}
             </blockquote>
-            <div className="mt-5 flex flex-wrap gap-2">
-              {[tx("aboutTag1"), tx("aboutTag2"), tx("aboutTag3")].map(
-                (tag) => (
-                  <Badge key={tag} variant="outline" className="bg-white/80">
-                    {tag}
-                  </Badge>
-                ),
-              )}
-            </div>
-            <div className="mt-6 grid gap-3">
-              {[
-                {
-                  label: tx("skill1"),
-                  pct: 92,
-                  dot: "bg-[#c9a13a]",
-                  seg: "bg-[#c9a13a]",
-                  badge:
-                    "border-[#ecd27a] bg-[#fdf3d0] text-[#7a5c14]",
-                },
-                {
-                  label: tx("skill2"),
-                  pct: 84,
-                  dot: "bg-[#b0526b]",
-                  seg: "bg-[#b0526b]",
-                  badge:
-                    "border-[#efb3c3] bg-[#fbe4ea] text-[#8a2f47]",
-                },
-                {
-                  label: tx("skill3"),
-                  pct: 76,
-                  dot: "bg-[#5a7a54]",
-                  seg: "bg-[#5a7a54]",
-                  badge:
-                    "border-[#bcd6b4] bg-[#e3efe1] text-[#3c5a38]",
-                },
-              ].map((s, idx) => {
-                const total = 20;
-                const filled = Math.round((s.pct / 100) * total);
-                return (
-                  <div
-                    key={s.label}
-                    className="rounded-2xl border border-white/70 bg-white/70 px-4 py-3 shadow-sm backdrop-blur"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <span
-                        className={`h-2.5 w-2.5 rounded-full shadow ${s.dot}`}
-                      />
-                      <span className="text-sm font-bold">{s.label}</span>
-                      <span
-                        className={`ml-auto rounded-full border px-2.5 py-0.5 text-[11px] font-bold ${s.badge}`}
-                      >
-                        {s.pct}%
-                      </span>
-                    </div>
-                    <div className="mt-2.5 flex gap-1" aria-hidden="true">
-                      {Array.from({ length: total }).map((_, j) => (
-                        <motion.span
-                          key={j}
-                          initial={{ opacity: 0, scale: 0.6 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
-                          viewport={{ once: true }}
-                          transition={{
-                            delay: idx * 0.1 + j * 0.02,
-                            duration: 0.25,
-                          }}
-                          className={`h-2.5 flex-1 rounded-[6px] ${
-                            j < filled ? s.seg : "bg-foreground/10"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
           </Reveal>
         </div>
       </section>
 
-      {/* ============ SERVICES + EXPERIENCE (combined) ============ */}
+      {/* ============ SKILLS (single part) ============ */}
       <section
         id="services"
         className="relative mx-auto max-w-6xl scroll-mt-28 px-6 pt-20"
@@ -505,95 +429,52 @@ export function PortfolioLanding() {
         <span id="works" className="absolute -top-24" aria-hidden="true" />
         <SectionHeading
           index="03"
-          eyebrow={tx("servicesKicker")}
-          title={tx("servicesTitle")}
-          copy={tx("servicesDesc")}
+          eyebrow={tx("skillsKicker")}
+          title={tx("skillsTitle")}
+          copy={tx("skillsDesc")}
           align="center"
         />
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s, i) => (
-            <Reveal key={s.title} delay={(i % 3) * 0.08}>
-              <Card className="group overflow-hidden rounded-[2rem] border-white/70 bg-white/80 backdrop-blur transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
-                <div
-                  className={`relative h-40 overflow-hidden bg-gradient-to-br ${s.tint}`}
+        <ol className="mt-10 grid gap-3 md:grid-cols-2">
+          {skills.map((s, i) => (
+            <Reveal key={s.title} delay={(i % 2) * 0.06}>
+              <li className="group relative flex items-start gap-4 overflow-hidden rounded-3xl border border-white/70 bg-white/75 p-5 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                <span
+                  className="absolute inset-y-0 left-0 w-1.5"
+                  style={{ backgroundColor: s.accent }}
+                  aria-hidden="true"
+                />
+                <span
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
+                  style={{
+                    backgroundColor: `${s.accent}1f`,
+                    color: s.accent,
+                  }}
                 >
-                  <SmartImage
-                    src={HERO_IMG}
-                    alt=""
-                    ariaHidden
-                    withPixels
-                    wrapperClassName="absolute inset-0"
-                    imgClassName={`opacity-90 transition-transform duration-700 group-hover:scale-110 ${s.crop}`}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
-                  <span className="absolute top-3 left-3">
-                    <Badge variant="pastel">{s.price}</Badge>
-                  </span>
-                </div>
-                <CardHeader className="pt-4">
-                  <s.icon className="h-6 w-6 text-primary" />
-                  <CardTitle className="font-display mt-2 text-xl">
-                    {s.title}
-                  </CardTitle>
-                  <CardDescription className="leading-7">
+                  <s.icon className="h-5 w-5" />
+                </span>
+                <div className="min-w-0">
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-display text-xs text-muted-foreground italic">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="font-display text-lg font-semibold">
+                      {s.title}
+                    </h3>
+                  </div>
+                  <p className="mt-1 text-sm leading-6 text-muted-foreground">
                     {s.desc}
-                  </CardDescription>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="mt-3 w-fit rounded-full"
+                  </p>
+                  <p
+                    className="handwritten mt-1.5 text-xs"
+                    style={{ color: s.accent }}
                   >
-                    {tx("ctaContact")} <ArrowUpRight className="h-3.5 w-3.5" />
-                  </Button>
-                </CardHeader>
-              </Card>
+                    ↳ {s.tag}
+                  </p>
+                </div>
+              </li>
             </Reveal>
           ))}
-        </div>
-
-        {/* ---- Experience & certificates (same section) ---- */}
-        <div className="mt-16 text-center">
-          <Badge variant="outline" className="bg-white/70">
-            <span className="font-display italic">✦</span>
-            <span className="mx-1">{tx("worksKicker")}</span>
-          </Badge>
-          <h3 className="font-display mt-4 text-3xl font-semibold text-balance sm:text-4xl">
-            {tx("worksTitle")}
-          </h3>
-          <p className="mx-auto mt-3 max-w-2xl leading-8 text-muted-foreground">
-            {tx("worksDesc")}
-          </p>
-        </div>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3, 4, 5, 6].map((i) => {
-            const Icon = breakdownIcons[i - 1];
-            return (
-              <Reveal key={i} delay={(i % 3) * 0.08}>
-                <Card className="group rounded-[2rem] border-white/70 bg-white/75 shadow-sm backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:rotate-[0.4deg] hover:shadow-xl">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#fdf6e3] via-[#f9dbe3] to-[#d9e9d4] text-[#5a4a33] shadow-inner transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                        <Icon className="h-5 w-5" />
-                      </span>
-                      <span className="font-display text-sm text-muted-foreground italic">
-                        0{i}
-                      </span>
-                    </div>
-                    <CardTitle className="font-display mt-4 text-xl">
-                      {tx(`card${i}T`)}
-                    </CardTitle>
-                    <CardDescription className="leading-7">
-                      {tx(`card${i}D`)}
-                    </CardDescription>
-                    <p className="handwritten mt-2 text-xs text-primary-600">
-                      ↳ {tx(`card${i}Tag`)}
-                    </p>
-                  </CardHeader>
-                </Card>
-              </Reveal>
-            );
-          })}
-        </div>
+        </ol>
       </section>
 
       {/* ============ CONTACT ============ */}
@@ -601,7 +482,7 @@ export function PortfolioLanding() {
         id="contact"
         className="relative mx-auto max-w-6xl scroll-mt-28 px-6 pt-20 pb-16"
       >
-        <div className="relative grid gap-6 overflow-hidden rounded-[2.5rem] border border-white/60 bg-gradient-to-br from-[#fffdf7] via-[#fdf1f4] to-[#eef3e8] p-7 shadow-2xl sm:p-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="relative grid gap-6 overflow-hidden rounded-[2.5rem] border border-white/60 bg-linear-to-br from-[#fffdf7] via-[#fdf1f4] to-[#eef3e8] p-7 shadow-2xl sm:p-10 lg:grid-cols-[0.9fr_1.1fr]">
           <Reveal>
             <Badge variant="gold">✦ {tx("contactKicker")} ✦</Badge>
             <h2 className="font-display mt-4 text-4xl leading-tight font-semibold text-balance sm:text-5xl">
@@ -622,7 +503,7 @@ export function PortfolioLanding() {
             </div>
             <Separator className="my-6" />
             <Button asChild size="lg" className="rounded-full">
-              <a href="mailto:hello@seraphina.art?subject=Commission%20—%20fallen%20angel%20style">
+              <a href="mailto:anahita.sllp2000@gmail.com?subject=Project%20inquiry%20—%20portfolio%20contact">
                 <Send className="h-4 w-4" />
                 {tx("contactBtn")}
               </a>

@@ -82,16 +82,9 @@ export const services: ServiceItem[] = [
 
 // Plain-English fallback (used if a translation key is missing).
 // Keep this in sync with messages/en.json -> Portfolio.
-export const portfolioFallback = {
-  sheetNo: "portfolio nº 04 — visual artist",
-  badge: "Portfolio • designer & illustrator",
-  titleA: "Creative designer",
-  titleB: "visual stories",
-  subtitle:
-    "I'm a multidisciplinary designer focused on branding, illustration and clean visual storytelling. This portfolio collects selected character work, costume details and recent commissions.",
-  ctaWork: "View selected works",
-  ctaContact: "Get in touch",
-  note: "Hero art: public/images/main.png (transparent PNG)",
-  marquee:
-    "branding • illustration • character design • visual identity • commissions • art direction",
+// Importing en.json guarantees no drift / no MISSING_MESSAGE for known keys.
+import enMessages from "../../messages/en.json";
+
+export const portfolioFallback: Record<string, string> = {
+  ...(enMessages.Portfolio as Record<string, string>),
 };

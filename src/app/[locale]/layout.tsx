@@ -39,7 +39,7 @@ export default async function LocaleLayout({
   const dir = locale === "fa" ? "rtl" : "ltr";
 
   return (
-    <html lang={locale} dir={dir}>
+    <html lang={locale} dir={dir} data-theme="angel" suppressHydrationWarning>
       <head>
         <ThemeInitializer />
       </head>
