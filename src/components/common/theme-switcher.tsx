@@ -38,9 +38,9 @@ export function ThemeSwitcher() {
   const toggleThemeWithAnimation = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
-    const order = ["angel", "navy", "pink"] as const;
+    const order = ["light", "dark", "red"] as const;
     const nextTheme =
-      order[(order.indexOf(theme as (typeof order)[number]) + 1) % order.length] ?? "angel";
+      order[(order.indexOf(theme as (typeof order)[number]) + 1) % order.length] ?? "light";
     const root = document.documentElement;
     const el = event.currentTarget;
 

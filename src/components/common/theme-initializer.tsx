@@ -5,16 +5,23 @@ export function ThemeInitializer() {
     (function () {
       try {
         var raw = localStorage.getItem("app-theme-storage");
-        var theme = "angel";
+        var theme = "light";
         if (raw) {
           var parsed = JSON.parse(raw);
-          if (parsed && parsed.state && parsed.state.theme) {
-            theme = parsed.state.theme;
+          var t = parsed && (parsed.state ? parsed.state.theme : parsed.theme);
+          if (t === "light" || t === "dark" || t === "red") {
+            theme = t;
+          } else if (t === "angel") {
+            theme = "light";
+          } else if (t === "navy" || t === "noir") {
+            theme = "dark";
+          } else if (t === "pink") {
+            theme = "red";
           }
         }
         document.documentElement.setAttribute("data-theme", theme);
       } catch (e) {
-        document.documentElement.setAttribute("data-theme", "angel");
+        document.documentElement.setAttribute("data-theme", "light");
       }
     })();
   `;

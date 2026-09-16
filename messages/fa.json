@@ -160,9 +160,9 @@
     "backToHome": "بازگشت به خانه"
   },
   "Theme": {
-    "angel": "روشن",
-    "navy": "سرمه‌ای",
-    "pink": "صورتی",
+    "light": "روشن",
+    "dark": "تیره",
+    "red": "قرمز",
     "switchLabel": "تغییر تم رنگی"
   },
   "Footer": {

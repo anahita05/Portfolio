@@ -130,3 +130,5 @@ export const galleryItems: GalleryItem[] = [
 ];
 
 export const HERO_IMG = "/images/main.png";
+export const HERO_IMG_DARK = "/images/main-dark.png";
+export const HERO_IMG_RED = "/images/main-red.png";

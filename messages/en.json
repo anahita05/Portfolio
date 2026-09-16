@@ -160,9 +160,9 @@
     "backToHome": "Back to home"
   },
   "Theme": {
-    "angel": "Light",
-    "navy": "Navy",
-    "pink": "Pink",
+    "light": "Light",
+    "dark": "Dark",
+    "red": "Red",
     "switchLabel": "Switch color theme"
   },
   "Footer": {
