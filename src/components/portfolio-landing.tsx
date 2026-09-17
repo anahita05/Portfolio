@@ -199,8 +199,9 @@ export function PortfolioLanding() {
                 alt="fallen angel hero"
                 loading="eager"
                 motionStyle={{ y: artY }}
-                wrapperClassName="relative z-10 h-auto w-full"
-                imgClassName="h-auto object-contain [filter:drop-shadow(0_30px_40px_rgba(90,60,50,0.3))]"
+                hoverZoom={false}
+                wrapperClassName="relative z-10 h-auto w-full bg-transparent"
+                imgClassName="h-auto bg-transparent object-contain"
                 skeletonClassName="rounded-[3rem]"
               />
 

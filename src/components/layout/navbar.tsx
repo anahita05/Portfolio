@@ -166,9 +166,6 @@ export function Navbar() {
                 {vaultLocked ? <Lock className="h-4 w-4" /> : <LockOpen className="h-4 w-4" />}
               </span>
               <span className="min-w-0 flex-1">
-                <span className="font-display block w-7 text-xs text-muted-foreground italic">
-                  06
-                </span>
                 <span className="block truncate text-sm font-semibold text-foreground/80">
                   {vt("teaserKicker")}
                 </span>
