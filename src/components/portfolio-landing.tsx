@@ -34,6 +34,7 @@ import { SectionHeading } from "@/components/atelier/section-heading";
 import { Gallery } from "@/components/atelier/gallery";
 import { ContactForm } from "@/components/atelier/contact-form";
 import { SmartImage } from "@/components/atelier/smart-image";
+import { SecretVault } from "@/components/vault/secret-vault";
 import { HERO_IMG } from "@/data/atelier";
 import { portfolioFallback } from "@/data/portfolio";
 
@@ -211,7 +212,6 @@ export function PortfolioLanding() {
                 <SmartImage
                   src={HERO_IMG}
                   alt="face study"
-                  withPixels
                   wrapperClassName="aspect-square w-full"
                   imgClassName="scale-[1.9] object-top"
                 />
@@ -229,7 +229,6 @@ export function PortfolioLanding() {
                 <SmartImage
                   src={HERO_IMG}
                   alt="wing study"
-                  withPixels
                   wrapperClassName="aspect-[4/3] w-full"
                   imgClassName="scale-[1.7] object-right"
                 />
@@ -330,9 +329,8 @@ export function PortfolioLanding() {
                   <SmartImage
                     src={HERO_IMG}
                     alt={f.title}
-                    withPixels
                     wrapperClassName="absolute inset-0"
-                    imgClassName={`transition-transform duration-700 group-hover:scale-110 ${f.img}`}
+                    imgClassName={`transition-transform duration-700 ${f.img}`}
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-[#2e2620]/35 via-transparent to-transparent opacity-80" />
                   <span className="absolute top-4 left-4">
@@ -393,7 +391,6 @@ export function PortfolioLanding() {
                 <SmartImage
                   src={HERO_IMG}
                   alt="artist"
-                  withPixels
                   wrapperClassName="aspect-[4/5] w-full rounded-[1.4rem]"
                   imgClassName="object-top"
                 />
@@ -483,7 +480,7 @@ export function PortfolioLanding() {
         className="relative mx-auto max-w-6xl scroll-mt-28 px-6 pt-20 pb-16"
       >
         <div className="relative grid gap-6 overflow-hidden rounded-[2.5rem] border border-white/60 bg-linear-to-br from-[#fffdf7] via-[#fdf1f4] to-[#eef3e8] p-7 shadow-2xl sm:p-10 lg:grid-cols-[0.9fr_1.1fr]">
-          <Reveal>
+          <Reveal className="contact-copy">
             <Badge variant="gold">✦ {tx("contactKicker")} ✦</Badge>
             <h2 className="font-display mt-4 text-4xl leading-tight font-semibold text-balance sm:text-5xl">
               {tx("contactTitle")}
@@ -517,6 +514,9 @@ export function PortfolioLanding() {
           </Reveal>
         </div>
       </section>
+
+      {/* ============ SECRET VAULT (password-protected, Express backend) ============ */}
+      <SecretVault />
     </div>
   );
 }

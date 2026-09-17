@@ -14,6 +14,7 @@ Live sections: Hero → Featured work → Project gallery → About → Skills �
 - About + Skills + Contact with `mailto:` CTA (`anahita.sllp2000@gmail.com`) and mailto-based contact form
 - Animations: Framer Motion reveals, floats, scroll parallax
 - UI: shadcn/ui + Tailwind + Lucide icons
+- Hidden vault section: password modal → Express backend (`./backend`) with JWT httpOnly-cookie auth → secret projects feed. See `backend/README.md`
 
 ## Prerequisites
 

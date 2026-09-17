@@ -2,17 +2,24 @@
 
 import * as React from "react";
 import { useTranslations } from "next-intl";
-import { Cloud, Menu, Star } from "lucide-react";
+import { Cloud, Lock, LockOpen, LogOut, Menu, Star } from "lucide-react";
 import { ThemeSwitcher } from "@/components/common/theme-switcher";
 import { LocaleSwitcher } from "@/components/common/locale-switcher";
 import { Button } from "@/components/ui/button";
 import { Sheet } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { revealFromElement } from "@/lib/view-transition";
+import { useVaultStore } from "@/store/useVaultStore";
 
 export function Navbar() {
   const t = useTranslations("Nav");
+  const vt = useTranslations("Vault");
   const [open, setOpen] = React.useState(false);
   const [active, setActive] = React.useState("#top");
+  const openVaultModal = useVaultStore((s) => s.openModal);
+  const vaultLogout = useVaultStore((s) => s.logout);
+  const vaultStatus = useVaultStore((s) => s.status);
+  const vaultLocked = vaultStatus !== "unlocked";
 
   const links = [
     { href: "#top", label: t("home"), hint: "00" },
@@ -45,10 +52,22 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  /** Vault box: locked -> open password modal; unlocked -> logout swaps back to main. */
+  const goVault = () => {
+    setOpen(false);
+    if (vaultLocked) openVaultModal();
+  };
+
+  const handleVaultLogout = (event: React.MouseEvent<HTMLElement>) => {
+    setOpen(false);
+    // Same circular reveal as the theme button, expanding from the logout icon.
+    void revealFromElement(event, () => vaultLogout(), "to-locked");
+  };
+
   return (
     <>
-      {/* Mobile floating pill */}
-      <div className="fixed inset-x-3 top-3 z-50 lg:hidden">
+      {/* Mobile floating pills: brand bar + separate vault box */}
+      <div className="fixed inset-x-3 top-3 z-50 space-y-2 lg:hidden">
         <div className="flex items-center justify-between rounded-full border border-white/70 bg-white/75 py-2 pr-2 pl-4 shadow-lg backdrop-blur-xl">
           <a
             href="#top"
@@ -78,6 +97,32 @@ export function Navbar() {
             </Button>
           </div>
         </div>
+        <div className="flex w-full items-center gap-2 rounded-full border border-white/70 bg-white/75 py-2 pr-2 pl-2 shadow-lg backdrop-blur-xl">
+          <button
+            onClick={goVault}
+            disabled={!vaultLocked}
+            title={vaultLocked ? vt("unlockBtn") : vt("success")}
+            aria-label={vaultLocked ? vt("unlockBtn") : vt("success")}
+            className="flex min-w-0 flex-1 items-center gap-2 text-left transition active:scale-[0.99] disabled:cursor-default"
+          >
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#2e2620] text-[#f5d67b]">
+              {vaultLocked ? <Lock className="h-4 w-4" /> : <LockOpen className="h-4 w-4" />}
+            </span>
+            <span className="block truncate text-sm font-bold text-primary">
+              {vt("teaserKicker")}
+            </span>
+          </button>
+          {!vaultLocked && (
+            <button
+              onClick={handleVaultLogout}
+              title={vt("lockBtn")}
+              aria-label={vt("lockBtn")}
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted-foreground transition hover:bg-white hover:text-foreground"
+            >
+              <LogOut className="h-4 w-4" />
+            </button>
+          )}
+        </div>
       </div>
 
       <Sheet open={open} onOpenChange={setOpen}>
@@ -106,9 +151,42 @@ export function Navbar() {
         </div>
       </Sheet>
 
-      {/* Desktop floating glass rail (kept on the left) */}
+      {/* Desktop: separate vault box ABOVE the navbar rail */}
       <aside className="fixed top-1/2 left-5 z-50 hidden w-[15.5rem] -translate-y-1/2 lg:block">
-        <div className="overflow-hidden rounded-[2rem] border border-white/70 bg-white/65 shadow-[0_25px_60px_-20px_rgba(90,60,50,0.4)] backdrop-blur-xl">
+        <div className="space-y-3">
+          <div className="group flex w-full items-center gap-3 rounded-[2rem] border border-white/70 bg-white/65 p-4 shadow-[0_25px_60px_-20px_rgba(90,60,50,0.4)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:bg-white">
+            <button
+              onClick={goVault}
+              disabled={!vaultLocked}
+              title={vaultLocked ? vt("unlockBtn") : vt("success")}
+              aria-label={vaultLocked ? vt("unlockBtn") : vt("success")}
+              className="flex min-w-0 flex-1 items-center gap-3 text-left disabled:cursor-default"
+            >
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#2e2620] text-[#f5d67b] shadow-md transition-transform duration-300 group-hover:scale-110">
+                {vaultLocked ? <Lock className="h-4 w-4" /> : <LockOpen className="h-4 w-4" />}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="font-display block w-7 text-xs text-muted-foreground italic">
+                  06
+                </span>
+                <span className="block truncate text-sm font-semibold text-foreground/80">
+                  {vt("teaserKicker")}
+                </span>
+              </span>
+            </button>
+            {!vaultLocked && (
+              <button
+                onClick={handleVaultLogout}
+                title={vt("lockBtn")}
+                aria-label={vt("lockBtn")}
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition hover:bg-primary-50 hover:text-foreground"
+              >
+                <LogOut className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+
+          <div className="overflow-hidden rounded-[2rem] border border-white/70 bg-white/65 shadow-[0_25px_60px_-20px_rgba(90,60,50,0.4)] backdrop-blur-xl">
           <div className="atelier-wash-soft border-b border-white/60 p-5">
             <a href="#top" className="group flex items-center gap-3">
               <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#2e2620] text-[#f5d67b] shadow-md transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105">
@@ -168,6 +246,7 @@ export function Navbar() {
           <div className="flex items-center justify-between gap-2 border-t border-white/60 bg-white/50 p-4">
             <LocaleSwitcher />
             <ThemeSwitcher />
+          </div>
           </div>
         </div>
       </aside>
