@@ -1,6 +1,11 @@
 
 
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000").replace(/\/$/, "");
+/**
+ * Minimal client for the vault auth backend (same-origin Next.js
+ * `/api/auth/*` routes by default; httpOnly JWT cookie auth).
+ * Set NEXT_PUBLIC_API_URL only to use the external Express backend (./backend).
+ */
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/$/, "");
 
 export type SecretProject = {
   id: string;

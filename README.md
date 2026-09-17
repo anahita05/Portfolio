@@ -14,7 +14,7 @@ Live sections: Hero → Featured work → Project gallery → About → Skills �
 - About + Skills + Contact with `mailto:` CTA (`anahita.sllp2000@gmail.com`) and mailto-based contact form
 - Animations: Framer Motion reveals, floats, scroll parallax
 - UI: shadcn/ui + Tailwind + Lucide icons
-- Hidden vault section: password modal → Express backend (`./backend`) with JWT httpOnly-cookie auth → secret projects feed. See `backend/README.md`
+- Hidden vault: password modal → built-in Next.js auth routes (`src/app/api/auth/*`) with JWT httpOnly-cookie auth → portfolio images swap hide ↔ main. Secrets live in env (`SECRET_PASSWORD`, `JWT_SECRET`), never in the bundle. The standalone Express backend (`./backend`, see `backend/README.md`) is kept as an optional alternative.
 
 ## Prerequisites
 
@@ -32,6 +32,7 @@ pnpm -v
 
 ```bash
 pnpm install
+cp .env.example .env.local   # fill in SECRET_PASSWORD + JWT_SECRET
 pnpm dev      # http://localhost:3000 → redirects to /fa
 pnpm build
 pnpm start
@@ -97,4 +98,4 @@ Any Node host works. Vercel recommended:
 pnpm build
 ```
 
-Push to GitHub → Import in Vercel → defaults work, no env vars required.
+Push to GitHub → Import in Vercel → set env vars `SECRET_PASSWORD` + `JWT_SECRET` (Vercel dashboard → Settings → Environment Variables) → Deploy. No backend service needed: auth runs as same-origin serverless functions (`/api/auth/*`, `/api/health`).

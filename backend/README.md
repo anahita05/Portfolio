@@ -1,4 +1,9 @@
-# Portfolio Vault API (Express backend)
+# Portfolio Vault API (Express backend — optional)
+
+> Since the Next.js app now ships built-in auth routes (`src/app/api/auth/*`,
+> same logic, same cookie), this standalone server is only needed if you
+> prefer split hosting. Point the frontend at it with
+> `NEXT_PUBLIC_API_URL=http://localhost:4000` (or your deployed URL).
 
 Separate Node.js + Express backend that guards the portfolio's hidden section.
 The frontend never sees the password — it POSTs a guess, and on success the
