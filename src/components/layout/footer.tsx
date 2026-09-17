@@ -1,12 +1,14 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Cloud, Star, Heart, Globe, Mail, Send } from "lucide-react";
+import { Cloud, Star, Heart, Globe, Lock, Mail, Send } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { useVaultStore } from "@/store/useVaultStore";
 
 export function Footer() {
   const t = useTranslations("Footer");
   const nav = useTranslations("Nav");
+  const openVault = useVaultStore((s) => s.openModal);
 
   return (
     <footer className="relative mx-auto w-full max-w-6xl px-6 pb-10">
@@ -76,6 +78,14 @@ export function Footer() {
           <p className="flex flex-wrap items-center justify-center gap-1.5 pt-5 text-center text-xs text-[#e6d9c2]/70">
             {t("text")}
             <Heart className="h-3 w-3 fill-[#f5d67b] text-[#f5d67b]" />
+            <button
+              onClick={openVault}
+              aria-label="Open private collection"
+              title="Private collection"
+              className="ml-2 flex h-7 w-7 items-center justify-center rounded-full border border-white/15 bg-white/5 text-[#d9c49c]/60 transition-all duration-300 hover:scale-110 hover:border-[#f5d67b]/50 hover:text-[#f5d67b]"
+            >
+              <Lock className="h-3 w-3" />
+            </button>
           </p>
         </div>
       </div>

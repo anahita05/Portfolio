@@ -7,13 +7,14 @@ Live sections: Hero → Featured work → Project gallery → About → Skills �
 ## Features
 
 - Bilingual `fa` / `en` with RTL/LTR switching (`next-intl`, locale-prefixed routes `/fa`, `/en`)
-- 3 themes: `angel` / `navy` / `pink` via `data-theme` + Zustand + localStorage (`app-theme-storage`), no-flash `ThemeInitializer`
-- Hero art composition with parallax + floating cards (single image `public/images/main.png`)
+- 3 themes: `light` / `dark` / `red` via `data-theme` + Zustand + localStorage (`app-theme-storage`), no-flash `ThemeInitializer`
+- Hero art composition with parallax + floating cards (`public/images/main.png`, themed counterparts `main-dark.png` / `main-red.png` with slow crossfade)
 - Featured projects (Cake Shop e-commerce, Tweeter full-stack clone, Quera bootcamp team projects)
 - Filterable project gallery (Front-End / Full-Stack / Team / UI)
 - About + Skills + Contact with `mailto:` CTA (`anahita.sllp2000@gmail.com`) and mailto-based contact form
 - Animations: Framer Motion reveals, floats, scroll parallax
 - UI: shadcn/ui + Tailwind + Lucide icons
+- Hidden vault: password modal → built-in Next.js auth routes (`src/app/api/auth/*`) with JWT httpOnly-cookie auth → portfolio images swap hide ↔ main. Secrets live in env (`SECRET_PASSWORD`, `JWT_SECRET`), never in the bundle. The standalone Express backend (`./backend`, see `backend/README.md`) is kept as an optional alternative.
 
 ## Prerequisites
 
@@ -31,6 +32,7 @@ pnpm -v
 
 ```bash
 pnpm install
+cp .env.example .env.local   # fill in SECRET_PASSWORD + JWT_SECRET
 pnpm dev      # http://localhost:3000 → redirects to /fa
 pnpm build
 pnpm start
@@ -81,11 +83,12 @@ public/images/main.png
 
 ## Customization
 
-- Hero / gallery image: replace `public/images/main.png` (keep transparency for best look, `HERO_IMG` in `src/data/atelier.ts`)
+- Hero / gallery image: replace `public/images/main.png` (keep transparency for best look, `HERO_IMG` in `src/data/atelier.ts`); themed counterparts are `main-dark.png` (`HERO_IMG_DARK`) and `main-red.png` (`HERO_IMG_RED`)
 - Texts: edit `messages/en.json` + `messages/fa.json` → `Portfolio` namespace. `portfolioFallback` auto-syncs from `en.json`, missing keys fall back gracefully via `useTx()` + `t.has()` guard
 - Email / links: `contactDesc`, `bullet1-3` in messages + `mailto:` in `src/components/portfolio-landing.tsx` and `src/components/atelier/contact-form.tsx` (currently `anahita.sllp2000@gmail.com`, `github.com/anahita05`)
-- Themes: CSS variables for `[data-theme="angel"|"navy"|"pink"]` in `src/app/globals.css`
+- Themes: CSS variables for `[data-theme="light"|"dark"|"red"]` in `src/app/globals.css`
 - Gallery: add/remove items in `src/data/atelier.ts` + matching `g*T` / `g*M` keys in messages
+
 
 ## Deploy
 
@@ -95,4 +98,4 @@ Any Node host works. Vercel recommended:
 pnpm build
 ```
 
-Push to GitHub → Import in Vercel → defaults work, no env vars required.
+Push to GitHub → Import in Vercel → set env vars `SECRET_PASSWORD` + `JWT_SECRET` (Vercel dashboard → Settings → Environment Variables) → Deploy. No backend service needed: auth runs as same-origin serverless functions (`/api/auth/*`, `/api/health`).

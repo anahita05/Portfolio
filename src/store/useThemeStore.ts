@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-export type ThemeName = "angel" | "navy" | "pink";
+export type ThemeName = "light" | "dark" | "red";
 
 interface ThemeState {
   theme: ThemeName;
@@ -14,13 +14,13 @@ interface ThemeState {
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set, get) => ({
-      theme: "angel",
+      theme: "light",
 
       setTheme: (theme) => set({ theme }),
 
       toggleTheme: () => {
         const current = get().theme;
-        const order: ThemeName[] = ["angel", "navy", "pink"];
+        const order: ThemeName[] = ["light", "dark", "red"];
         const next = order[(order.indexOf(current) + 1) % order.length];
         set({ theme: next });
       },
@@ -28,6 +28,19 @@ export const useThemeStore = create<ThemeState>()(
     {
       name: "app-theme-storage",
       storage: createJSONStorage(() => localStorage),
+      version: 1,
+      migrate: (persisted: unknown) => {
+        const state = (persisted as { state?: { theme?: unknown } })?.state;
+        const t = state?.theme;
+        if (t === "light" || t === "dark" || t === "red") {
+          return { theme: t };
+        }
+        // migrate legacy names
+        if (t === "angel") return { theme: "light" };
+        if (t === "navy" || t === "noir") return { theme: "dark" };
+        if (t === "pink") return { theme: "red" };
+        return { theme: "light" };
+      },
     }
   )
 );

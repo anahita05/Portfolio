@@ -2,7 +2,7 @@
   "Nav": {
     "home": "خانه",
     "about": "درباره",
-    "brand": "آناهیتا ✦ Dev",
+    "brand": "آناهیتا/پورتفولیو",
     "openMenu": "باز کردن منو",
     "closeMenu": "بستن منو",
     "sheet": "پروژه‌ها",
@@ -160,10 +160,27 @@
     "backToHome": "بازگشت به خانه"
   },
   "Theme": {
-    "angel": "روشن",
-    "navy": "سرمه‌ای",
-    "pink": "صورتی",
+    "light": "روشن",
+    "dark": "تیره",
+    "red": "قرمز",
     "switchLabel": "تغییر تم رنگی"
+  },
+  "Vault": {
+    "teaserKicker": "بخش محدود",
+    "teaserTitle": "گنجینه پنهان",
+    "teaserDesc": "کالکشن خصوصی کارهای منتشرنشده پشت یک رمز عبور است. اگر کلید را داری، وارد شو.",
+    "teaserBtn": "باز کردن گنجینه",
+    "teaserHint": "پست — کارفرماها رمز را می‌گیرند",
+    "checking": "در حال بررسی نشست…",
+    "modalTitle": "ورود به گنجینه",
+    "modalDesc": "رمز مخفی را بنویس تا کالکشن پنهان نمایش داده شود.",
+    "passwordLabel": "رمز عبور",
+    "passwordPh": "رمز را بنویس…",
+    "unlockBtn": "باز کردن",
+    "unlocking": "در حال بررسی…",
+    "cancel": "انصراف",
+    "success": "باز شد ✦ خوش آمدی",
+    "lockBtn": "قفل دوباره"
   },
   "Footer": {
     "text": "Front-End Developer",

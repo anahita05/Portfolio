@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-bilingual-template",
+  "name": "portfolio",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -13,6 +13,7 @@
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "framer-motion": "^13.2.0",
+    "jsonwebtoken": "^9.0.3",
     "lucide-react": "1.28.0",
     "next": "16.3.0",
     "next-intl": "4.13.5",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "3.3.6",
     "@tailwindcss/postcss": "4.3.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "26.1.2",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",

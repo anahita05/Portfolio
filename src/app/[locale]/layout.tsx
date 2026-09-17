@@ -11,8 +11,8 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "Seraphina Atelier — Dreamy Character Portfolio",
-  description: "Premium soft-fantasy art atelier: characters, illustrations, concept art and commissions",
+  title: "Portfolio",
+  description: "Anahita/portfolio — characters, illustrations, concept art and commissions",
 };
 
 export function generateStaticParams() {
@@ -39,7 +39,7 @@ export default async function LocaleLayout({
   const dir = locale === "fa" ? "rtl" : "ltr";
 
   return (
-    <html lang={locale} dir={dir} data-theme="angel" suppressHydrationWarning>
+    <html lang={locale} dir={dir} data-theme="light" suppressHydrationWarning>
       <head>
         <ThemeInitializer />
       </head>

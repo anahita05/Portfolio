@@ -39,8 +39,8 @@ export function Atmosphere() {
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[-3] overflow-hidden">
-      {/* ivory foundation */}
-      <div className="absolute inset-0 bg-[#fbf7ee]" />
+      {/* foundation tint per theme (see .atmosphere-base) */}
+      <div className="atmosphere-base absolute inset-0" />
 
       {/* slow drifting gradient wash */}
       <div className="atelier-wash absolute inset-[-20%]" />

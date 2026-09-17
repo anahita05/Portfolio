@@ -4,14 +4,20 @@ import * as React from "react";
 import { motion, type MotionStyle } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import PixelCard from "@/components/PixelCard";
+import { useThemeStore } from "@/store/useThemeStore";
+import { useVaultStore } from "@/store/useVaultStore";
+import { resolveVaultSrc } from "@/lib/vault-images";
+import { HERO_IMG, HERO_IMG_DARK, HERO_IMG_RED } from "@/data/atelier";
 
-/** Atelier-tinted pixel palette: gold + rose + cream + blush. */
-const DEFAULT_PIXEL_COLORS = "#f5d67b,#e8b4a0,#c9a13a,#f9dbe3";
+type ArtLayer = "light" | "dark" | "red";
 
 type SmartImageProps = {
   src: string;
   alt: string;
+  /** explicit dark-theme counterpart; auto-uses main-dark for the hero cutout */
+  srcDark?: string;
+  /** explicit red-theme counterpart; auto-uses main-red for the hero cutout */
+  srcRed?: string;
   /** classes for the outer wrapper (sizing / aspect / rounded / overflow) */
   wrapperClassName?: string;
   /** classes for the <img> itself (object-cover, scale, etc.) */
@@ -20,47 +26,172 @@ type SmartImageProps = {
   skeletonClassName?: string;
   loading?: "lazy" | "eager";
   ariaHidden?: boolean;
-  /** when provided, renders a motion.img with parallax style (e.g. { y }) */
+  /** when provided, renders a motion wrapper with parallax style (e.g. { y }) */
   motionStyle?: MotionStyle;
-  /** overlay a continuously-shimmering React-Bits PixelCard canvas over the image */
-  withPixels?: boolean;
-  /** pixel palette (comma-separated colors) */
-  pixelColors?: string;
+  /** swap `src` to its `-hide` twin while locked (default true; set false to opt out) */
+  vaultSwap?: boolean;
+  /** smooth hover zoom on the picture (default true; set false to opt out) */
+  hoverZoom?: boolean;
 };
+
+const LAYER_ORDER: ArtLayer[] = ["light", "dark", "red"];
+const LAYER_GLOW: Record<Exclude<ArtLayer, "light">, string> = {
+  dark: "themed-img-dark-glow",
+  red: "themed-img-red-glow",
+};
+
+type LayerModel = {
+  id: ArtLayer;
+  /** source before the vault swap (undefined = layer absent) */
+  base: string | undefined;
+  /** resolved source actually rendered */
+  src: string | undefined;
+  /** true for the stacked dark/red overlays */
+  overlay: boolean;
+};
+
+function isComplete(el: HTMLImageElement | null): boolean {
+  return !!el && el.complete && el.naturalWidth > 0;
+}
+
+/**
+ * Render-phase reset ("adjust state during render"): runs `reset` once per
+ * distinct key without an effect, so no cascading renders (lint-safe).
+ */
+function useResetOnKey(key: string, reset: () => void): void {
+  const [prev, setPrev] = React.useState<string | null>(null);
+  if (prev !== key) {
+    setPrev(key);
+    reset();
+  }
+}
 
 /**
  * shadcn-style image: shows a <Skeleton /> behind every image
  * until it fires onLoad / onError. Use for ALL images.
+ *
+ * Hero artwork slowly crossfades (~1.6s) between light / dark / red
+ * counterparts as the theme changes, instead of snapping.
  */
 export function SmartImage({
   src,
   alt,
+  srcDark,
+  srcRed,
   wrapperClassName,
   imgClassName,
   skeletonClassName,
   loading = "lazy",
   ariaHidden,
   motionStyle,
-  withPixels = false,
-  pixelColors = DEFAULT_PIXEL_COLORS,
+  vaultSwap = true,
+  hoverZoom = true,
 }: SmartImageProps) {
-  const [loaded, setLoaded] = React.useState(false);
-  const imgRef = React.useRef<HTMLImageElement | null>(null);
+  const theme = useThemeStore((s) => s.theme);
+  // Global unlock flag: locked visitors see -hide, unlocked clients see -main.
+  const isUnlocked = useVaultStore((s) => s.status === "unlocked");
+  const useHide = vaultSwap && !isUnlocked;
+
+  // If the hide file 404s (no -hide version), fall back to the main version.
+  const [vaultFallback, setVaultFallback] = React.useState(false);
+  useResetOnKey(`${src}|${srcDark ?? ""}|${srcRed ?? ""}`, () => {
+    if (vaultFallback) setVaultFallback(false);
+  });
+  const hideActive = useHide && !vaultFallback;
+
+  // One model per theme layer: base src -> vault-resolved src.
+  // Every usage of the light hero cutout gets themed cutouts automatically.
+  // The vault swap happens AFTER theme resolution so each layer maps to its hide twin.
+  const layers: LayerModel[] = LAYER_ORDER.map((id) => {
+    const base =
+      id === "light"
+        ? src
+        : id === "dark"
+          ? (srcDark ?? (src === HERO_IMG ? HERO_IMG_DARK : undefined))
+          : (srcRed ?? (src === HERO_IMG ? HERO_IMG_RED : undefined));
+    return {
+      id,
+      base,
+      src: base ? resolveVaultSrc(base, hideActive) : undefined,
+      overlay: id !== "light",
+    };
+  });
+  const hasAltLayer = layers.some((l) => l.overlay && l.base);
+
+  const hideSwapped = layers.some((l) => l.src && l.src !== l.base);
+  const [loaded, setLoaded] = React.useState<Record<ArtLayer, boolean>>({
+    light: false,
+    dark: true,
+    red: true,
+  });
+  // Reset the skeleton whenever a resolved (possibly swapped) src changes.
+  useResetOnKey(
+    layers.map((l) => l.src ?? "").join("|"),
+    () => {
+      const fresh = { light: false, dark: true, red: true } as Record<ArtLayer, boolean>;
+      for (const l of layers) {
+        if (l.id !== "light") fresh[l.id] = !l.src;
+      }
+      setLoaded(fresh);
+    },
+  );
+
+  const markLoaded = React.useCallback(
+    (id: ArtLayer) => {
+      setLoaded((prev) => (prev[id] ? prev : { ...prev, [id]: true }));
+    },
+    [setLoaded],
+  );
+
+  const refs = React.useRef<Record<ArtLayer, HTMLImageElement | null>>({
+    light: null,
+    dark: null,
+    red: null,
+  });
+  // One stable callback ref per layer (no per-render churn).
+  const refCallbacks = React.useMemo(
+    () =>
+      Object.fromEntries(
+        LAYER_ORDER.map((id) => [
+          id,
+          (el: HTMLImageElement | null) => {
+            refs.current[id] = el;
+            if (isComplete(el)) markLoaded(id);
+          },
+        ]),
+      ) as Record<ArtLayer, (el: HTMLImageElement | null) => void>,
+    [markLoaded],
+  );
 
   // Cached images can skip onLoad — mark ready if already complete.
   React.useEffect(() => {
-    const el = imgRef.current;
-    if (el && el.complete && el.naturalWidth > 0) setLoaded(true);
-  }, [src]);
+    for (const id of LAYER_ORDER) {
+      if (isComplete(refs.current[id])) markLoaded(id);
+    }
+  }, [layers.map((l) => l.src).join("|"), markLoaded]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleRef = React.useCallback((el: HTMLImageElement | null) => {
-    imgRef.current = el;
-    if (el && el.complete && el.naturalWidth > 0) setLoaded(true);
-  }, []);
+  const handleBaseError = React.useCallback(() => {
+    // No -hide file for this image -> keep showing -main instead of breaking.
+    if (hideSwapped) setVaultFallback(true);
+    markLoaded("light");
+  }, [hideSwapped, markLoaded]);
 
-  return (
-    <div className={cn("relative overflow-hidden", wrapperClassName)}>
-      {!loaded && (
+  const visibleLoaded = loaded[theme];
+  const opacityFor = (l: LayerModel): string => {
+    if (!l.src) return "hidden";
+    const active = theme === l.id;
+    return active ? (loaded[l.id] ? "opacity-100" : "opacity-0") : "opacity-0";
+  };
+
+  const content = (
+    <div
+      className={cn(
+        "h-full w-full",
+        hoverZoom &&
+          "transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.05] group-hover:scale-[1.05] motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:group-hover:scale-100",
+      )}
+    >
+      {!visibleLoaded && (
         <Skeleton
           aria-hidden="true"
           className={cn(
@@ -69,48 +200,42 @@ export function SmartImage({
           )}
         />
       )}
-      {motionStyle ? (
-        <motion.img
-          ref={handleRef}
-          src={src}
-          alt={alt}
-          loading={loading}
-          aria-hidden={ariaHidden}
-          style={motionStyle}
-          onLoad={() => setLoaded(true)}
-          onError={() => setLoaded(true)}
-          className={cn(
-            "block h-full w-full object-cover transition-opacity duration-700",
-            loaded ? "opacity-100" : "opacity-0",
-            imgClassName,
-          )}
-        />
-      ) : (
-        <img
-          ref={handleRef}
-          src={src}
-          alt={alt}
-          loading={loading}
-          aria-hidden={ariaHidden}
-          onLoad={() => setLoaded(true)}
-          onError={() => setLoaded(true)}
-          className={cn(
-            "block h-full w-full object-cover transition-opacity duration-700",
-            loaded ? "opacity-100" : "opacity-0",
-            imgClassName,
-          )}
-        />
-      )}
-      {withPixels && (
-        <PixelCard
-          autoPlay
-          noFocus
-          gap={8}
-          speed={30}
-          colors={pixelColors}
-          className="pixel-frame-overlay"
-        />
+      {layers.map(
+        (l) =>
+          l.src && (
+            <img
+              key={l.id}
+              ref={refCallbacks[l.id]}
+              src={l.src}
+              alt={l.overlay ? (theme === l.id ? alt : "") : hasAltLayer ? "" : alt}
+              aria-hidden={l.overlay ? theme !== l.id : hasAltLayer ? true : ariaHidden}
+              loading={loading}
+              onLoad={() => markLoaded(l.id)}
+              onError={l.overlay ? () => markLoaded(l.id) : handleBaseError}
+              className={cn(
+                "theme-crossfade-img block h-full w-full object-cover",
+                l.overlay && `absolute inset-0 ${LAYER_GLOW[l.id as Exclude<ArtLayer, "light">]}`,
+                opacityFor(l),
+                imgClassName
+              )}
+            />
+          ),
       )}
     </div>
+  );
+
+  if (motionStyle) {
+    return (
+      <motion.div
+        style={motionStyle}
+        className={cn("relative overflow-hidden", wrapperClassName)}
+      >
+        {content}
+      </motion.div>
+    );
+  }
+
+  return (
+    <div className={cn("relative overflow-hidden", wrapperClassName)}>{content}</div>
   );
 }

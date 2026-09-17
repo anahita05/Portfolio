@@ -1,0 +1,22 @@
+{
+  "name": "portfolio-vault-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Express backend for the portfolio's password-protected hidden section (JWT httpOnly cookie auth).",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.4.1",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

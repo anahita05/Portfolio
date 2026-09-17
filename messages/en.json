@@ -2,7 +2,7 @@
   "Nav": {
     "home": "Home",
     "about": "About",
-    "brand": "Anahita",
+    "brand": "Anahita/portfolio",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "sheet": "Projects",
@@ -160,10 +160,27 @@
     "backToHome": "Back to home"
   },
   "Theme": {
-    "angel": "Light",
-    "navy": "Navy",
-    "pink": "Pink",
+    "light": "Light",
+    "dark": "Dark",
+    "red": "Red",
     "switchLabel": "Switch color theme"
+  },
+  "Vault": {
+    "teaserKicker": "restricted area",
+    "teaserTitle": "The hidden vault",
+    "teaserDesc": "A private collection of unlisted work lives behind a password. If you have the key, step inside.",
+    "teaserBtn": "Unlock the vault",
+    "teaserHint": "psst — clients get the password",
+    "checking": "Checking session…",
+    "modalTitle": "Enter the vault",
+    "modalDesc": "Type the secret password to reveal the hidden collection.",
+    "passwordLabel": "Password",
+    "passwordPh": "Type the password…",
+    "unlockBtn": "Unlock",
+    "unlocking": "Checking…",
+    "cancel": "Cancel",
+    "success": "Unlocked ✦ welcome in",
+    "lockBtn": "Lock again"
   },
   "Footer": {
     "text": "Front-End Developer",

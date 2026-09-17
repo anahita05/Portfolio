@@ -2,7 +2,7 @@
 @custom-variant hover (&:hover);
 
 :root,
-[data-theme="angel"] {
+[data-theme="light"] {
   --background: 42 38% 93%;
   --foreground: 20 18% 22%;
 
@@ -38,71 +38,71 @@
   --radius: 1rem;
 }
 
-[data-theme="navy"] {
-  --background: 225 20% 85%;
-  --foreground: 222 47% 11%;
+[data-theme="dark"] {
+  --background: 40 22% 4%;
+  --foreground: 45 28% 90%;
 
-  --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
+  --card: 40 20% 8%;
+  --card-foreground: 45 28% 90%;
 
-  --primary: 222 55% 28%;
-  --primary-foreground: 0 0% 100%;
-  --primary-50: 220 60% 96%;
-  --primary-100: 220 55% 90%;
-  --primary-200: 221 55% 80%;
-  --primary-300: 221 55% 68%;
-  --primary-400: 221 55% 52%;
-  --primary-500: 222 55% 40%;
-  --primary-600: 222 55% 32%;
-  --primary-700: 222 55% 24%;
-  --primary-800: 222 55% 16%;
-  --primary-900: 223 55% 10%;
+  --primary: 43 74% 55%;
+  --primary-foreground: 40 25% 6%;
+  --primary-50: 45 40% 10%;
+  --primary-100: 44 45% 15%;
+  --primary-200: 43 55% 22%;
+  --primary-300: 43 65% 32%;
+  --primary-400: 43 70% 43%;
+  --primary-500: 43 74% 55%;
+  --primary-600: 44 80% 63%;
+  --primary-700: 45 85% 70%;
+  --primary-800: 46 90% 78%;
+  --primary-900: 48 95% 86%;
 
-  --secondary: 210 40% 94%;
-  --secondary-foreground: 222 47% 11%;
+  --secondary: 40 16% 11%;
+  --secondary-foreground: 45 28% 90%;
 
-  --muted: 210 40% 94%;
-  --muted-foreground: 215 16% 47%;
+  --muted: 40 14% 11%;
+  --muted-foreground: 44 45% 68%;
 
-  --border: 214 32% 88%;
-  --input: 214 32% 88%;
-  --ring: 222 55% 40%;
+  --border: 44 45% 28%;
+  --input: 44 45% 28%;
+  --ring: 44 85% 60%;
 
-  --destructive: 0 72% 51%;
+  --destructive: 0 72% 55%;
   --destructive-foreground: 0 0% 100%;
 
-  --radius: 0.75rem;
+  --radius: 1rem;
 }
 
-[data-theme="pink"] {
-  --background: 305 84% 94%;
-  --foreground: 336 40% 15%;
+[data-theme="red"] {
+  --background: 0 62% 89%;
+  --foreground: 0 50% 13%;
 
-  --card: 0 0% 100%;
-  --card-foreground: 336 40% 15%;
+  --card: 0 80% 96%;
+  --card-foreground: 0 50% 13%;
 
-  --primary: 336 74% 45%;
+  --primary: 0 72% 45%;
   --primary-foreground: 0 0% 100%;
-  --primary-50: 330 90% 97%;
-  --primary-100: 330 85% 92%;
-  --primary-200: 332 80% 85%;
-  --primary-300: 333 78% 74%;
-  --primary-400: 335 76% 63%;
-  --primary-500: 336 74% 51%;
-  --primary-600: 336 74% 42%;
-  --primary-700: 336 74% 33%;
-  --primary-800: 336 74% 24%;
-  --primary-900: 337 74% 15%;
+  --primary-50: 0 85% 97%;
+  --primary-100: 0 80% 92%;
+  --primary-200: 0 78% 85%;
+  --primary-300: 0 75% 72%;
+  --primary-400: 0 73% 60%;
+  --primary-500: 0 72% 50%;
+  --primary-600: 0 72% 42%;
+  --primary-700: 0 72% 33%;
+  --primary-800: 0 70% 24%;
+  --primary-900: 0 70% 15%;
 
-  --secondary: 330 60% 95%;
-  --secondary-foreground: 336 40% 15%;
+  --secondary: 0 60% 94%;
+  --secondary-foreground: 0 45% 14%;
 
-  --muted: 330 40% 95%;
-  --muted-foreground: 332 20% 45%;
+  --muted: 0 40% 94%;
+  --muted-foreground: 0 20% 45%;
 
-  --border: 330 40% 89%;
-  --input: 330 40% 89%;
-  --ring: 336 74% 51%;
+  --border: 0 40% 88%;
+  --input: 0 40% 88%;
+  --ring: 0 72% 50%;
 
   --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 100%;
@@ -113,14 +113,16 @@
 body {
   background-color: transparent;
   color: hsl(var(--foreground));
-  font-family: var(--font-body), "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
+  font-family:
+    var(--font-body), "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
   transition:
     background-color 0.35s ease,
     color 0.35s ease;
 }
 
 [dir="rtl"] body {
-  font-family: var(--font-body), "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
+  font-family:
+    var(--font-body), "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
 }
 
 ::view-transition-group(root) {
@@ -137,19 +139,38 @@ body {
   mix-blend-mode: normal;
 }
 
-[data-theme-transition="to-navy"]::view-transition-old(root) {
+[data-theme-transition="to-light"]::view-transition-old(root) {
   z-index: 9999;
   animation: theme-circle-shrink 1000ms ease-out forwards;
 }
-[data-theme-transition="to-navy"]::view-transition-new(root) {
+[data-theme-transition="to-light"]::view-transition-new(root) {
   z-index: 1;
 }
 
-[data-theme-transition="to-pink"]::view-transition-new(root) {
+[data-theme-transition="to-dark"]::view-transition-new(root) {
+  z-index: 9999;
+  animation: theme-circle-expand 1100ms ease-out forwards;
+}
+[data-theme-transition="to-dark"]::view-transition-old(root) {
+  z-index: 1;
+}
+
+[data-theme-transition="to-red"]::view-transition-new(root) {
   z-index: 9999;
   animation: theme-circle-expand 1000ms ease-out forwards;
 }
-[data-theme-transition="to-pink"]::view-transition-old(root) {
+[data-theme-transition="to-red"]::view-transition-old(root) {
+  z-index: 1;
+}
+
+/* Vault lock/unlock: same circular reveal as the theme button. */
+[data-vault-transition="to-locked"]::view-transition-new(root),
+[data-vault-transition="to-unlocked"]::view-transition-new(root) {
+  z-index: 9999;
+  animation: vault-circle-expand 1000ms ease-out forwards;
+}
+[data-vault-transition="to-locked"]::view-transition-old(root),
+[data-vault-transition="to-unlocked"]::view-transition-old(root) {
   z-index: 1;
 }
 
@@ -162,6 +183,19 @@ body {
   to {
     clip-path: circle(
       150vmax at var(--theme-transition-x) var(--theme-transition-y)
+    );
+  }
+}
+
+@keyframes vault-circle-expand {
+  from {
+    clip-path: circle(
+      0% at var(--vault-transition-x) var(--vault-transition-y)
+    );
+  }
+  to {
+    clip-path: circle(
+      150vmax at var(--vault-transition-x) var(--vault-transition-y)
     );
   }
 }
@@ -179,16 +213,28 @@ body {
   }
 }
 
-/* ---- Angel portfolio skin ---- */
+/* ---- Atelier portfolio skin ---- */
 .font-display {
   font-family: var(--font-display), var(--font-body), Georgia, serif;
   letter-spacing: -0.01em;
 }
 .paper-grain {
   background-image:
-    radial-gradient(ellipse 60% 50% at 15% 10%, rgba(185, 151, 91, 0.14), transparent 60%),
-    radial-gradient(ellipse 50% 45% at 85% 15%, rgba(232, 180, 160, 0.16), transparent 60%),
-    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(154, 123, 63, 0.1), transparent 65%),
+    radial-gradient(
+      ellipse 60% 50% at 15% 10%,
+      rgba(185, 151, 91, 0.14),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 45% at 85% 15%,
+      rgba(232, 180, 160, 0.16),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 70% 60% at 50% 100%,
+      rgba(154, 123, 63, 0.1),
+      transparent 65%
+    ),
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
 }
 .sketch-border {
@@ -208,11 +254,31 @@ html {
    Ivory + cream + sage + rose + lavender + whisper of sky. Fixed, moves on scroll. */
 .atelier-wash {
   background:
-    radial-gradient(ellipse 55% 40% at 12% 8%, rgba(245, 214, 123, 0.35), transparent 60%),
-    radial-gradient(ellipse 45% 40% at 88% 12%, rgba(249, 219, 227, 0.5), transparent 60%),
-    radial-gradient(ellipse 50% 45% at 80% 85%, rgba(221, 208, 247, 0.4), transparent 62%),
-    radial-gradient(ellipse 55% 45% at 8% 88%, rgba(217, 233, 212, 0.5), transparent 62%),
-    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(224, 242, 254, 0.35), transparent 65%),
+    radial-gradient(
+      ellipse 55% 40% at 12% 8%,
+      rgba(245, 214, 123, 0.35),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 45% 40% at 88% 12%,
+      rgba(249, 219, 227, 0.5),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 45% at 80% 85%,
+      rgba(221, 208, 247, 0.4),
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 55% 45% at 8% 88%,
+      rgba(217, 233, 212, 0.5),
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 50% 50%,
+      rgba(224, 242, 254, 0.35),
+      transparent 65%
+    ),
     linear-gradient(115deg, #fffdf7 0%, #faf3e3 30%, #f6ecdf 55%, #fbf7ee 100%);
   background-size: 220% 220%;
   animation: atelier-wash-drift 24s ease-in-out infinite;
@@ -220,9 +286,21 @@ html {
 
 .atelier-wash-soft {
   background:
-    radial-gradient(ellipse 60% 50% at 20% 15%, rgba(245, 214, 123, 0.3), transparent 60%),
-    radial-gradient(ellipse 55% 50% at 85% 80%, rgba(249, 219, 227, 0.4), transparent 60%),
-    radial-gradient(ellipse 50% 50% at 60% 40%, rgba(221, 208, 247, 0.28), transparent 62%);
+    radial-gradient(
+      ellipse 60% 50% at 20% 15%,
+      rgba(245, 214, 123, 0.3),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 55% 50% at 85% 80%,
+      rgba(249, 219, 227, 0.4),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 50% at 60% 40%,
+      rgba(221, 208, 247, 0.28),
+      transparent 62%
+    );
 }
 
 .blob {
@@ -233,29 +311,88 @@ html {
   will-change: transform;
 }
 
-.blob-cream { width: 38rem; height: 38rem; left: -10rem; top: -12rem;
-  background: radial-gradient(circle, rgba(253, 246, 227, 0.95), transparent 65%);
-  animation: drift-a 19s ease-in-out infinite alternate; }
-.blob-sage { width: 30rem; height: 30rem; left: 6%; bottom: -12rem;
-  background: radial-gradient(circle, rgba(217, 233, 212, 0.9), transparent 65%);
-  animation: drift-b 23s ease-in-out infinite alternate; }
-.blob-rose { width: 32rem; height: 32rem; right: -8rem; top: 6%;
-  background: radial-gradient(circle, rgba(249, 219, 227, 0.9), transparent 65%);
-  animation: drift-a 21s ease-in-out infinite alternate-reverse; }
-.blob-lavender { width: 28rem; height: 28rem; right: 12%; bottom: 8%;
-  background: radial-gradient(circle, rgba(221, 208, 247, 0.85), transparent 65%);
-  animation: drift-b 26s ease-in-out infinite alternate-reverse; }
-.blob-sky { width: 26rem; height: 26rem; left: 38%; top: 30%;
-  background: radial-gradient(circle, rgba(186, 230, 253, 0.55), transparent 65%);
-  animation: drift-a 28s ease-in-out infinite alternate; }
-.blob-gold { width: 22rem; height: 22rem; left: 55%; top: -6rem;
-  background: radial-gradient(circle, rgba(245, 214, 123, 0.6), transparent 65%);
-  animation: drift-b 20s ease-in-out infinite alternate; }
+.blob-cream {
+  width: 38rem;
+  height: 38rem;
+  left: -10rem;
+  top: -12rem;
+  background: radial-gradient(
+    circle,
+    rgba(253, 246, 227, 0.95),
+    transparent 65%
+  );
+  animation: drift-a 19s ease-in-out infinite alternate;
+}
+.blob-sage {
+  width: 30rem;
+  height: 30rem;
+  left: 6%;
+  bottom: -12rem;
+  background: radial-gradient(
+    circle,
+    rgba(217, 233, 212, 0.9),
+    transparent 65%
+  );
+  animation: drift-b 23s ease-in-out infinite alternate;
+}
+.blob-rose {
+  width: 32rem;
+  height: 32rem;
+  right: -8rem;
+  top: 6%;
+  background: radial-gradient(
+    circle,
+    rgba(249, 219, 227, 0.9),
+    transparent 65%
+  );
+  animation: drift-a 21s ease-in-out infinite alternate-reverse;
+}
+.blob-lavender {
+  width: 28rem;
+  height: 28rem;
+  right: 12%;
+  bottom: 8%;
+  background: radial-gradient(
+    circle,
+    rgba(221, 208, 247, 0.85),
+    transparent 65%
+  );
+  animation: drift-b 26s ease-in-out infinite alternate-reverse;
+}
+.blob-sky {
+  width: 26rem;
+  height: 26rem;
+  left: 38%;
+  top: 30%;
+  background: radial-gradient(
+    circle,
+    rgba(186, 230, 253, 0.55),
+    transparent 65%
+  );
+  animation: drift-a 28s ease-in-out infinite alternate;
+}
+.blob-gold {
+  width: 22rem;
+  height: 22rem;
+  left: 55%;
+  top: -6rem;
+  background: radial-gradient(
+    circle,
+    rgba(245, 214, 123, 0.6),
+    transparent 65%
+  );
+  animation: drift-b 20s ease-in-out infinite alternate;
+}
 
 .atelier-star {
   position: absolute;
   border-radius: 9999px;
-  background: radial-gradient(circle, #fff 0%, rgba(201, 161, 58, 0.9) 60%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    #fff 0%,
+    rgba(201, 161, 58, 0.9) 60%,
+    transparent 70%
+  );
   box-shadow: 0 0 12px rgba(245, 214, 123, 0.8);
   animation: star-twinkle 4.5s ease-in-out infinite;
   opacity: 0.7;
@@ -268,36 +405,92 @@ html {
 }
 
 /* legacy aliases kept for existing markup */
-.sky-scene { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
-.sky-clouds { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+.sky-scene {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+}
+.sky-clouds {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
 
 @keyframes atelier-wash-drift {
-  0% { background-position: 0% 30%; }
-  50% { background-position: 100% 70%; }
-  100% { background-position: 0% 30%; }
+  0% {
+    background-position: 0% 30%;
+  }
+  50% {
+    background-position: 100% 70%;
+  }
+  100% {
+    background-position: 0% 30%;
+  }
 }
 
 @keyframes drift-a {
-  from { transform: translate(0, 0) scale(1); }
-  to { transform: translate(5rem, 3.5rem) scale(1.12); }
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(2.5rem, 2rem) scale(1.06);
+  }
 }
 
 @keyframes drift-b {
-  from { transform: translate(0, 0) scale(1.08); }
-  to { transform: translate(-4rem, -3rem) scale(0.96); }
+  from {
+    transform: translate(0, 0) scale(1.04);
+  }
+  to {
+    transform: translate(-2rem, -1.5rem) scale(0.98);
+  }
 }
 
 @keyframes star-twinkle {
-  0%, 100% { opacity: 0.15; transform: scale(0.8); }
-  50% { opacity: 0.9; transform: scale(1.15); }
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08);
+  }
 }
 
 @keyframes float-soft {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
-.animate-float-soft { animation: float-soft 6s ease-in-out infinite; }
+.animate-float-soft {
+  animation: float-soft 9s ease-in-out infinite;
+}
+
+/* All image cards get a gentle lift on hover, with slower motion overall. */
+.group img,
+.group > img {
+  transition:
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center;
+  will-change: transform, filter;
+}
+
+.group:hover img,
+.group:hover > img {
+  transform: scale(1.04) rotate(0.35deg);
+  filter: saturate(1.08) contrast(1.04);
+}
 
 @media (prefers-reduced-motion: reduce) {
   .atelier-wash,
@@ -306,4 +499,402 @@ html {
   .animate-float-soft {
     animation: none !important;
   }
+}
+
+/* ============ DARK theme atmosphere (black + golden) ============ */
+.atmosphere-base {
+  background-color: #fbf7ee;
+  transition: background-color 1.2s ease;
+}
+[data-theme="dark"] .atmosphere-base {
+  background-color: #060503;
+}
+[data-theme="red"] .atmosphere-base {
+  background-color: #fdf1f1;
+}
+
+[data-theme="dark"] .atelier-wash {
+  background:
+    radial-gradient(
+      ellipse 55% 40% at 12% 8%,
+      rgba(212, 175, 55, 0.22),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 45% 40% at 88% 12%,
+      rgba(212, 175, 55, 0.12),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 45% at 80% 85%,
+      rgba(146, 104, 20, 0.18),
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 55% 45% at 8% 88%,
+      rgba(120, 85, 15, 0.14),
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 50% 50%,
+      rgba(212, 175, 55, 0.07),
+      transparent 65%
+    ),
+    linear-gradient(115deg, #060503 0%, #0c0904 35%, #100c05 60%, #060503 100%);
+}
+
+[data-theme="dark"] .atelier-wash-soft {
+  background:
+    radial-gradient(
+      ellipse 60% 50% at 20% 15%,
+      rgba(212, 175, 55, 0.2),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 55% 50% at 85% 80%,
+      rgba(146, 104, 20, 0.16),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 50% at 60% 40%,
+      rgba(212, 175, 55, 0.1),
+      transparent 62%
+    );
+}
+
+[data-theme="dark"] .blob {
+  opacity: 0.32;
+}
+[data-theme="dark"] .blob-gold {
+  opacity: 0.55;
+}
+[data-theme="dark"] .blob-cream,
+[data-theme="dark"] .blob-sage,
+[data-theme="dark"] .blob-rose,
+[data-theme="dark"] .blob-lavender,
+[data-theme="dark"] .blob-sky {
+  opacity: 0.14;
+  filter: blur(60px) sepia(0.6) saturate(0.7);
+}
+
+[data-theme="dark"] .atelier-star {
+  background: radial-gradient(
+    circle,
+    #fff8e1 0%,
+    rgba(240, 201, 78, 0.95) 60%,
+    transparent 70%
+  );
+  box-shadow: 0 0 18px rgba(240, 201, 78, 0.95);
+}
+
+[data-theme="dark"] .atelier-grain {
+  mix-blend-mode: screen;
+  opacity: 0.35;
+}
+
+[data-theme="dark"] .paper-grain {
+  background-image:
+    radial-gradient(
+      ellipse 60% 50% at 15% 10%,
+      rgba(212, 175, 55, 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 45% at 85% 15%,
+      rgba(212, 175, 55, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 70% 60% at 50% 100%,
+      rgba(212, 175, 55, 0.07),
+      transparent 65%
+    ),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+/* Frosted light-glass becomes smoky black-gold glass in dark.
+   Solid white polaroid frames (border-4/border-8 border-white, bg-white)
+   are intentionally left untouched. */
+[data-theme="dark"] .bg-white\/50,
+[data-theme="dark"] .bg-white\/60,
+[data-theme="dark"] .bg-white\/65,
+[data-theme="dark"] .bg-white\/70,
+[data-theme="dark"] .bg-white\/75,
+[data-theme="dark"] .bg-white\/85,
+[data-theme="dark"] .bg-white\/90 {
+  background-color: rgba(26, 19, 8, 0.8) !important;
+  border-color: rgba(212, 175, 55, 0.45) !important;
+  color: hsl(var(--foreground));
+}
+
+[data-theme="dark"] .border-white\/60,
+[data-theme="dark"] .border-white\/70 {
+  border-color: rgba(212, 175, 55, 0.5) !important;
+}
+
+/* Nav-link white hover becomes a golden wash (solid white polaroids + white text untouched). */
+[data-theme="dark"] .hover\:bg-white:hover {
+  background-color: rgba(212, 175, 55, 0.14) !important;
+}
+
+/* Gold accents burn brighter in dark. */
+[data-theme="dark"] .text-\[\#c9a13a\] {
+  color: #f0c94e !important;
+}
+[data-theme="dark"] .fill-\[\#c9a13a\] {
+  fill: #f0c94e !important;
+}
+[data-theme="dark"] .text-\[\#f5d67b\] {
+  color: #ffe9a8 !important;
+}
+[data-theme="dark"] .fill-\[\#f5d67b\] {
+  fill: #ffe9a8 !important;
+}
+
+/* Dark chips get a golden ring + glow. */
+[data-theme="dark"] .bg-\[\#2e2620\] {
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.45),
+    0 10px 30px -8px rgba(212, 175, 55, 0.35) !important;
+}
+
+/* Gold badge text (e.g. "open to work") reads pure black in dark. */
+[data-theme="dark"] .text-\[\#6b5320\] {
+  color: #000 !important;
+}
+
+/* Contact info column sits on a light card — keep its copy black in dark.
+   (Bullet chips become dark glass with light text, so they are excluded.) */
+[data-theme="dark"] .contact-copy > h2,
+[data-theme="dark"] .contact-copy > p {
+  color: #000 !important;
+}
+
+/* "Send me an email" button keeps a warm gold fill with black text in dark. */
+[data-theme="dark"] .contact-copy > a {
+  background-color: #f5d67b !important;
+  border-color: #f5d67b !important;
+  color: #000 !important;
+}
+[data-theme="dark"] .contact-copy > a svg {
+  color: #000 !important;
+}
+
+[data-theme="dark"] .blob-gold {
+  opacity: 0.8;
+}
+
+[data-theme="dark"] .bg-\[\#fffdf7\],
+[data-theme="dark"] .bg-\[\#fffdf7\]\/95 {
+  background-color: #131007 !important;
+  border-color: rgba(212, 175, 55, 0.28) !important;
+  color: hsl(var(--foreground));
+}
+
+[data-theme="dark"] .themed-img-dark-glow {
+  filter: drop-shadow(0 22px 45px rgba(212, 175, 55, 0.28));
+}
+
+/* ============ RED theme atmosphere (warm crimson wash) ============ */
+
+[data-theme="red"] .atelier-wash {
+  background:
+    radial-gradient(
+      ellipse 55% 40% at 12% 8%,
+      rgba(230, 57, 70, 0.22),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 45% 40% at 88% 12%,
+      rgba(255, 138, 138, 0.28),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 45% at 80% 85%,
+      rgba(163, 18, 32, 0.14),
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 55% 45% at 8% 88%,
+      rgba(230, 57, 70, 0.14),
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 50% 50%,
+      rgba(255, 217, 217, 0.4),
+      transparent 65%
+    ),
+    linear-gradient(115deg, #fff5f5 0%, #fde8e8 30%, #f9d9d9 55%, #fdf1f1 100%);
+}
+
+[data-theme="red"] .atelier-wash-soft {
+  background:
+    radial-gradient(
+      ellipse 60% 50% at 20% 15%,
+      rgba(230, 57, 70, 0.2),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 55% 50% at 85% 80%,
+      rgba(255, 138, 138, 0.28),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 50% at 60% 40%,
+      rgba(255, 217, 217, 0.35),
+      transparent 62%
+    );
+}
+
+[data-theme="red"] .atelier-star {
+  background: radial-gradient(
+    circle,
+    #fff 0%,
+    rgba(230, 57, 70, 0.9) 60%,
+    transparent 70%
+  );
+  box-shadow: 0 0 12px rgba(230, 57, 70, 0.8);
+}
+
+[data-theme="red"] .paper-grain {
+  background-image:
+    radial-gradient(
+      ellipse 60% 50% at 15% 10%,
+      rgba(163, 18, 32, 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 45% at 85% 15%,
+      rgba(230, 57, 70, 0.12),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 70% 60% at 50% 100%,
+      rgba(163, 18, 32, 0.08),
+      transparent 65%
+    ),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/* Slow cinematic crossfade between light + red artwork */
+.theme-crossfade-img {
+  transition:
+    opacity 1.6s ease-in-out,
+    filter 1.6s ease-in-out;
+  will-change: opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-crossfade-img {
+    transition: none;
+  }
+}
+[data-theme="red"] .themed-img-red-glow {
+  filter: drop-shadow(0 22px 45px rgba(163, 18, 32, 0.3));
+}
+
+/* ============ RED theme: push crimson everywhere (polaroid frames stay white) ============ */
+
+/* White glass becomes rosy glass. */
+[data-theme="red"] .bg-white\/50,
+[data-theme="red"] .bg-white\/60,
+[data-theme="red"] .bg-white\/65,
+[data-theme="red"] .bg-white\/70,
+[data-theme="red"] .bg-white\/75,
+[data-theme="red"] .bg-white\/85,
+[data-theme="red"] .bg-white\/90 {
+  background-color: rgba(255, 230, 230, 0.82) !important;
+  border-color: rgba(220, 38, 38, 0.3) !important;
+  color: hsl(var(--foreground));
+}
+
+[data-theme="red"] .border-white\/60,
+[data-theme="red"] .border-white\/70 {
+  border-color: rgba(220, 38, 38, 0.32) !important;
+}
+
+[data-theme="red"] .hover\:bg-white:hover {
+  background-color: rgba(230, 57, 70, 0.12) !important;
+}
+
+/* Dark-brown chips (brand badges, active pills, icon tiles, footer) -> deep crimson. */
+[data-theme="red"] .bg-\[\#2e2620\] {
+  background-color: #a31220 !important;
+  box-shadow: 0 12px 32px -12px rgba(163, 18, 32, 0.55) !important;
+}
+
+/* Gold icons / text -> red. */
+[data-theme="red"] .text-\[\#c9a13a\] {
+  color: #e63946 !important;
+}
+[data-theme="red"] .fill-\[\#c9a13a\] {
+  fill: #e63946 !important;
+}
+[data-theme="red"] .text-\[\#f5d67b\] {
+  color: #ffd9d9 !important;
+}
+[data-theme="red"] .fill-\[\#f5d67b\] {
+  fill: #ffd9d9 !important;
+}
+[data-theme="red"] .bg-\[\#f5d67b\] {
+  background-color: #ffe3e3 !important;
+}
+
+/* Gold badge -> rose badge. */
+[data-theme="red"] .border-\[\#e6c87a\]\/60 {
+  background: linear-gradient(
+    to right,
+    #ffe0e0,
+    rgba(230, 57, 70, 0.45)
+  ) !important;
+  border-color: rgba(230, 57, 70, 0.5) !important;
+  color: #a31220 !important;
+}
+[data-theme="red"] .text-\[\#6b5320\] {
+  color: #a31220 !important;
+}
+
+/* Gold hand-drawn underline -> red. */
+[data-theme="red"] path[stroke="#c9a13a"] {
+  stroke: #e63946;
+}
+
+/* Richer crimson atmosphere. */
+[data-theme="red"] .atmosphere-base {
+  background-color: #fbe3e3;
+}
+[data-theme="red"] .atelier-wash {
+  background:
+    radial-gradient(
+      ellipse 55% 40% at 12% 8%,
+      rgba(230, 57, 70, 0.32),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 45% 40% at 88% 12%,
+      rgba(255, 138, 138, 0.4),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 45% at 80% 85%,
+      rgba(163, 18, 32, 0.22),
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 55% 45% at 8% 88%,
+      rgba(230, 57, 70, 0.22),
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 50% 50%,
+      rgba(230, 57, 70, 0.16),
+      transparent 65%
+    ),
+    linear-gradient(115deg, #ffe9e9 0%, #fbd5d5 30%, #f6c2c2 55%, #ffe9e9 100%);
+}
+[data-theme="red"] .blob-rose {
+  opacity: 0.95;
+}
+[data-theme="red"] .blob-gold {
+  background: radial-gradient(circle, rgba(230, 57, 70, 0.55), transparent 65%);
+  opacity: 0.7;
 }
