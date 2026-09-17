@@ -11,8 +11,8 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "Seraphina Atelier — Dreamy Character Portfolio",
-  description: "Premium soft-fantasy art atelier: characters, illustrations, concept art and commissions",
+  title: "Portfolio",
+  description: "Anahita/portfolio — characters, illustrations, concept art and commissions",
 };
 
 export function generateStaticParams() {
