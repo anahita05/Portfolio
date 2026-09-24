@@ -12,6 +12,8 @@ import {
   ArrowDown,
   ArrowUpRight,
   Brush,
+  CodeXml,
+  ExternalLink,
   Eye,
   Feather,
   Gem,
@@ -24,6 +26,7 @@ import {
   Shirt,
   Sparkles,
   Star,
+  Globe,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -36,7 +39,16 @@ import { ContactForm } from "@/components/atelier/contact-form";
 import { SmartImage } from "@/components/atelier/smart-image";
 import { SecretVault } from "@/components/vault/secret-vault";
 import { HERO_IMG } from "@/data/atelier";
-import { portfolioFallback } from "@/data/portfolio";
+import {
+  CAKE_SHOP_GITHUB_URL,
+  CAKE_SHOP_LIVE_URL,
+  TWEETER_GITHUB_URL,
+  TWEETER_LIVE_URL,
+  SOCIALLY_QBC_GITHUB_URL,
+  TODO_QBC_GITHUB_URL,
+  portfolioFallback,
+} from "@/data/portfolio";
+import { useThemeStore } from "@/store/useThemeStore";
 
 const breakdownIcons = [Gem, Eye, Shirt, Feather, Scan, Link2];
 const serviceIcons = [Brush, Layers, Gem, Palette, Eye, Feather];
@@ -65,6 +77,9 @@ function useTx() {
 
 export function PortfolioLanding() {
   const tx = useTx();
+  const theme = useThemeStore((s) => s.theme);
+  // Accent stays readable on glass: deepen it on the light stage, lift it on dark stages.
+  const accentMix = theme === "light" ? "75%, #2e2620" : "60%, white";
   const reduce = useReducedMotion();
   const heroRef = React.useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -268,7 +283,7 @@ export function PortfolioLanding() {
         {/* marquee ribbon */}
         <Reveal className="mt-10">
           <div className="relative overflow-hidden rounded-full border border-white/70 bg-white/60 py-3 shadow-sm backdrop-blur">
-            <p className="handwritten animate-pulse text-center text-sm tracking-wide text-primary-700">
+            <p className="handwritten text-center text-sm tracking-wide text-primary-700">
               ✦ {tx("marquee")} ✦
             </p>
           </div>
@@ -302,30 +317,42 @@ export function PortfolioLanding() {
               title: tx("feat1T"),
               desc: tx("feat1D"),
               img: "object-top scale-100",
-              bg: "from-[#fdf6e3] to-[#f3e3bd]",
-              tilt: "md:-rotate-2 md:translate-y-4",
+              links: [
+                { kind: "live" as const, url: CAKE_SHOP_LIVE_URL },
+                { kind: "code" as const, url: CAKE_SHOP_GITHUB_URL },
+              ],
             },
             {
               tag: tx("featTag2"),
               title: tx("feat2T"),
               desc: tx("feat2D"),
               img: "object-top scale-[1.9]",
-              bg: "from-[#fff1f3] to-[#f5c9d6]",
-              tilt: "md:z-10 md:scale-[1.04]",
+              links: [
+                { kind: "live" as const, url: TWEETER_LIVE_URL },
+                { kind: "code" as const, url: TWEETER_GITHUB_URL },
+              ],
             },
             {
               tag: tx("featTag3"),
               title: tx("feat3T"),
               desc: tx("feat3D"),
               img: "object-right scale-[1.7]",
-              bg: "from-[#f2f8f0] to-[#cfdcc9]",
-              tilt: "md:rotate-2 md:translate-y-4",
+              links: [
+                {
+                  kind: "code" as const,
+                  url: SOCIALLY_QBC_GITHUB_URL,
+                  label: "Socially-QBC",
+                },
+                {
+                  kind: "code" as const,
+                  url: TODO_QBC_GITHUB_URL,
+                  label: "To-Do-List-QBC",
+                },
+              ],
             },
           ].map((f, i) => (
             <Reveal key={f.title} delay={i * 0.1}>
-              <figure
-                className={`group relative overflow-hidden rounded-4xl border border-white/70 bg-linear-to-br ${f.bg} ${f.tilt} shadow-[0_25px_50px_-20px_rgba(90,60,50,0.4)] transition-all duration-500 hover:z-20 hover:scale-[1.03] hover:rotate-0`}
-              >
+              <figure className="group relative overflow-hidden rounded-[2rem] border border-white/70 shadow-[0_25px_50px_-20px_rgba(90,60,50,0.4)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-20px_rgba(120,70,90,0.4)]">
                 <div className="relative aspect-4/5 overflow-hidden">
                   <SmartImage
                     src={HERO_IMG}
@@ -333,22 +360,53 @@ export function PortfolioLanding() {
                     wrapperClassName="absolute inset-0"
                     imgClassName={`transition-transform duration-700 ${f.img}`}
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-[#2e2620]/35 via-transparent to-transparent opacity-80" />
-                  <span className="absolute top-4 left-4">
-                    <Badge variant="pastel">{f.tag}</Badge>
-                  </span>
-                  <span className="font-display absolute top-4 right-4 text-sm text-white/90 italic">
-                    0{i + 1}
-                  </span>
+                  {/* darken the image so the overlaid text stays readable */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/10" />
+                  {/* full details — directly on the picture, no box */}
+                  <figcaption className="absolute inset-x-0 bottom-0 p-5">
+                    <Badge variant="pastel" className="w-fit shadow-lg">
+                      {f.tag}
+                    </Badge>
+                    <h3 className="font-display mt-2 text-2xl leading-tight font-semibold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+                      {f.title}
+                    </h3>
+                    <p className="mt-1 text-sm leading-7 text-white/85 drop-shadow-[0_1px_6px_rgba(0,0,0,0.8)]">
+                      {f.desc}
+                    </p>
+                    {f.links.length > 0 ? (
+                      <div className="mt-3 flex flex-wrap items-center gap-2">
+                        {f.links.map((l) =>
+                          l.kind === "live" ? (
+                            <a
+                              key={l.url}
+                              href={l.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs font-semibold text-black shadow transition hover:bg-white/85"
+                            >
+                              <Globe className="h-3.5 w-3.5" />
+                              {tx("featLive")}
+                              <ExternalLink className="h-3 w-3 opacity-70" />
+                            </a>
+                          ) : (
+                            <a
+                              key={l.url}
+                              href={l.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-xs font-semibold text-white backdrop-blur transition hover:bg-white/20"
+                            >
+                              <CodeXml className="h-3.5 w-3.5" />
+                              {"label" in l && l.label
+                                ? l.label
+                                : tx("featCode")}
+                            </a>
+                          ),
+                        )}
+                      </div>
+                    ) : null}
+                  </figcaption>
                 </div>
-                <figcaption className="relative bg-white/85 p-5 backdrop-blur">
-                  <h3 className="font-display text-2xl font-semibold">
-                    {f.title}
-                  </h3>
-                  <p className="handwritten mt-1 text-sm text-muted-foreground">
-                    {f.desc}
-                  </p>
-                </figcaption>
               </figure>
             </Reveal>
           ))}
@@ -399,7 +457,7 @@ export function PortfolioLanding() {
                   the artist, mid-sketch ✎
                 </p>
               </div>
-              <div className="animate-float-soft absolute -right-6 -bottom-4 rotate-[4deg] rounded-2xl border border-white/70 bg-white/90 px-4 py-2.5 shadow-lg backdrop-blur">
+              <div className="absolute -right-6 -bottom-4 rotate-[4deg] rounded-2xl border border-white/70 bg-white/90 px-4 py-2.5 shadow-lg backdrop-blur">
                 <p className="text-xs font-bold">✦ {tx("philTitle")}</p>
               </div>
             </div>
@@ -432,46 +490,56 @@ export function PortfolioLanding() {
           copy={tx("skillsDesc")}
           align="center"
         />
-        <ol className="mt-10 grid gap-3 md:grid-cols-2">
-          {skills.map((s, i) => (
-            <Reveal key={s.title} delay={(i % 2) * 0.06}>
-              <li className="group relative flex items-start gap-4 overflow-hidden rounded-3xl border border-white/70 bg-white/75 p-5 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-                <span
-                  className="absolute inset-y-0 left-0 w-1.5"
-                  style={{ backgroundColor: s.accent }}
-                  aria-hidden="true"
-                />
-                <span
-                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
-                  style={{
-                    backgroundColor: `${s.accent}1f`,
-                    color: s.accent,
-                  }}
-                >
-                  <s.icon className="h-5 w-5" />
-                </span>
-                <div className="min-w-0">
-                  <div className="flex items-baseline gap-2">
-                    <span className="font-display text-xs text-muted-foreground italic">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="font-display text-lg font-semibold">
-                      {s.title}
+        <ol className="relative mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {skills.map((s, i) => {
+            const [firstWord, ...restWords] = s.title.split(" ");
+            const rest = restWords.join(" ");
+            const brightAccent = `color-mix(in srgb, ${s.accent} ${accentMix})`;
+            return (
+              <Reveal key={s.title} delay={(i % 3) * 0.06}>
+                <li className="glass-card group relative h-full overflow-hidden rounded-[2rem] border p-6 backdrop-blur-2xl transition-all duration-300 hover:-translate-y-1">
+                  {/* ghost icon watermark */}
+                  <s.icon
+                    className="glass-ghost pointer-events-none absolute -right-5 -bottom-5 h-28 w-28 transition-transform duration-500 group-hover:scale-110"
+                    aria-hidden="true"
+                  />
+                  <div className="relative">
+                    <div className="flex items-center justify-between">
+                      <span className="glass-faint text-[11px] font-semibold tracking-[0.25em]">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span
+                        className="glass-chip flex h-10 w-10 items-center justify-center rounded-2xl border backdrop-blur"
+                        style={{
+                          color: brightAccent,
+                          boxShadow: `0 0 20px ${s.accent}66`,
+                        }}
+                      >
+                        <s.icon className="h-5 w-5" />
+                      </span>
+                    </div>
+                    <h3 className="font-display mt-4 text-[1.65rem] leading-tight font-semibold">
+                      <span className="glass-title">{firstWord}</span>
+                      {rest ? (
+                        <>
+                          {" "}
+                          <span style={{ color: brightAccent }}>
+                            {rest}
+                          </span>
+                        </>
+                      ) : null}
                     </h3>
+                    <p className="glass-desc mt-2 text-sm leading-6">
+                      {s.desc}
+                    </p>
+                    <p className="glass-faint handwritten mt-3 text-xs">
+                      ↳ {s.tag}
+                    </p>
                   </div>
-                  <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                    {s.desc}
-                  </p>
-                  <p
-                    className="handwritten mt-1.5 text-xs"
-                    style={{ color: s.accent }}
-                  >
-                    ↳ {s.tag}
-                  </p>
-                </div>
-              </li>
-            </Reveal>
-          ))}
+                </li>
+              </Reveal>
+            );
+          })}
         </ol>
       </section>
 

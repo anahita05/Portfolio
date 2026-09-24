@@ -35,6 +35,19 @@ export type ServiceItem = {
 
 export const heroImage = "/images/main.png";
 
+/** Project links — single source of truth lives in data/atelier. */
+export {
+  CAKE_SHOP_LIVE_URL,
+  CAKE_SHOP_GITHUB_URL,
+  TWEETER_LIVE_URL,
+  TWEETER_GITHUB_URL,
+  TEMPLATE_NEXT_LIVE_URL,
+  TEMPLATE_NEXT_GITHUB_URL,
+  TODO_QBC_GITHUB_URL,
+  SOCIALLY_QBC_GITHUB_URL,
+  CS50_GITHUB_URL,
+} from "@/data/atelier";
+
 export const breakdown: BreakdownItem[] = [
   { icon: Gem, titleKey: "card1T", descKey: "card1D", tagKey: "card1Tag" },
   { icon: Eye, titleKey: "card2T", descKey: "card2D", tagKey: "card2Tag" },

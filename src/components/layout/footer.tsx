@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { Cloud, Star, Heart, Globe, Lock, Mail, Send } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useVaultStore } from "@/store/useVaultStore";
@@ -11,7 +12,26 @@ export function Footer() {
   const openVault = useVaultStore((s) => s.openModal);
 
   return (
-    <footer className="relative mx-auto w-full max-w-6xl px-6 pb-10">
+    <footer className="relative mx-auto w-full max-w-6xl px-6 pt-32 pb-10 sm:pt-40">
+      {/* Light angel sitting on top edge of the footer card */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 z-20 flex justify-center sm:justify-end sm:pr-20"
+      >
+        <div className="relative">
+          <Image
+            src="/images/light-sit.png"
+            alt=""
+            width={360}
+            height={540}
+            draggable={false}
+            className="h-44 w-auto object-contain object-bottom [filter:drop-shadow(0_18px_24px_rgba(46,38,32,0.35))] select-none sm:h-60"
+          />
+          {/* soft contact shadow where her dress meets the footer edge */}
+          <div className="absolute -bottom-1 left-1/2 h-4 w-3/4 -translate-x-1/2 rounded-full bg-[#2e2620]/25 blur-md" />
+        </div>
+      </div>
+
       <div className="relative overflow-hidden rounded-[2.5rem] border border-white/70 bg-[#2e2620] text-[#f5efe2] shadow-2xl">
         <div
           className="absolute inset-0 opacity-50"

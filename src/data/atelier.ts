@@ -23,7 +23,28 @@ export type GalleryItem = {
   ratio: "tall" | "square" | "wide" | "portrait";
   year: string;
   mediumKey: string;
+  liveUrl?: string;
+  githubUrl?: string;
 };
+
+export const CAKE_SHOP_LIVE_URL =
+  "https://cake-website-project-rosy.vercel.app";
+export const CAKE_SHOP_GITHUB_URL =
+  "https://github.com/anahita05/cake-website-project";
+
+export const TWEETER_LIVE_URL = "https://vercel-two-tau-13.vercel.app/";
+export const TWEETER_GITHUB_URL = "https://github.com/anahita05/Tweeter_Demo";
+
+export const TEMPLATE_NEXT_LIVE_URL =
+  "https://template-next-js-ten.vercel.app/en";
+export const TEMPLATE_NEXT_GITHUB_URL =
+  "https://github.com/anahita05/template-next.js";
+
+export const TODO_QBC_GITHUB_URL =
+  "https://github.com/anahita05/To-Do-List-QBC";
+export const SOCIALLY_QBC_GITHUB_URL =
+  "https://github.com/anahita05/Socially-QBC";
+export const CS50_GITHUB_URL = "https://github.com/anahita05/CS50-P";
 
 export const galleryFilters: Array<{
   id: "all" | GalleryCategory;
@@ -46,26 +67,32 @@ export const galleryItems: GalleryItem[] = [
     ratio: "tall",
     year: "2025",
     mediumKey: "mChar",
+    liveUrl: CAKE_SHOP_LIVE_URL,
+    githubUrl: CAKE_SHOP_GITHUB_URL,
   },
   {
     id: "g2",
     titleKey: "g2T",
     metaKey: "g2M",
-    category: "illustration",
+    category: "characters",
     treatment: "mood-rose",
     ratio: "square",
     year: "2025",
-    mediumKey: "mIllus",
+    mediumKey: "mChar",
+    liveUrl: CAKE_SHOP_LIVE_URL,
+    githubUrl: CAKE_SHOP_GITHUB_URL,
   },
   {
     id: "g3",
     titleKey: "g3T",
     metaKey: "g3M",
-    category: "concept",
+    category: "characters",
     treatment: "sketch",
     ratio: "wide",
-    year: "2024",
-    mediumKey: "mConcept",
+    year: "2025",
+    mediumKey: "mChar",
+    liveUrl: CAKE_SHOP_LIVE_URL,
+    githubUrl: CAKE_SHOP_GITHUB_URL,
   },
   {
     id: "g4",
@@ -76,16 +103,20 @@ export const galleryItems: GalleryItem[] = [
     ratio: "portrait",
     year: "2025",
     mediumKey: "mChar",
+    liveUrl: CAKE_SHOP_LIVE_URL,
+    githubUrl: CAKE_SHOP_GITHUB_URL,
   },
   {
     id: "g5",
     titleKey: "g5T",
     metaKey: "g5M",
-    category: "commissions",
+    category: "illustration",
     treatment: "jewel",
     ratio: "square",
     year: "2024",
-    mediumKey: "mComm",
+    mediumKey: "mIllus",
+    liveUrl: TWEETER_LIVE_URL,
+    githubUrl: TWEETER_GITHUB_URL,
   },
   {
     id: "g6",
@@ -96,6 +127,8 @@ export const galleryItems: GalleryItem[] = [
     ratio: "tall",
     year: "2024",
     mediumKey: "mIllus",
+    liveUrl: TWEETER_LIVE_URL,
+    githubUrl: TWEETER_GITHUB_URL,
   },
   {
     id: "g7",
@@ -106,16 +139,18 @@ export const galleryItems: GalleryItem[] = [
     ratio: "wide",
     year: "2025",
     mediumKey: "mConcept",
+    githubUrl: SOCIALLY_QBC_GITHUB_URL,
   },
   {
     id: "g8",
     titleKey: "g8T",
     metaKey: "g8M",
-    category: "commissions",
+    category: "concept",
     treatment: "mood-lavender",
     ratio: "portrait",
     year: "2025",
-    mediumKey: "mComm",
+    mediumKey: "mConcept",
+    githubUrl: TODO_QBC_GITHUB_URL,
   },
   {
     id: "g9",
@@ -124,8 +159,10 @@ export const galleryItems: GalleryItem[] = [
     category: "characters",
     treatment: "wings-right",
     ratio: "square",
-    year: "2024",
+    year: "2025",
     mediumKey: "mChar",
+    liveUrl: TEMPLATE_NEXT_LIVE_URL,
+    githubUrl: TEMPLATE_NEXT_GITHUB_URL,
   },
 ];
 

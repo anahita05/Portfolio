@@ -478,12 +478,8 @@ html {
 /* All image cards get a gentle lift on hover, with slower motion overall. */
 .group img,
 .group > img {
-  transition:
-    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 900ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
   transform-origin: center;
-  will-change: transform, filter;
 }
 
 .group:hover img,
@@ -498,6 +494,21 @@ html {
   .atelier-star,
   .animate-float-soft {
     animation: none !important;
+  }
+}
+
+/* ============ Mobile perf: phones choke on full-screen repaints ============
+   Pause the drifting background wash/blobs/stars on small screens and
+   lighten the heavy frosted-glass blur. The hero polaroid float is kept. */
+@media (max-width: 640px) {
+  .atelier-wash,
+  .blob,
+  .atelier-star {
+    animation: none !important;
+  }
+  .glass-card {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 }
 
@@ -897,4 +908,104 @@ html {
 [data-theme="red"] .blob-gold {
   background: radial-gradient(circle, rgba(230, 57, 70, 0.55), transparent 65%);
   opacity: 0.7;
+}
+
+/* ============ Glassmorphism skills stage (theme-aware) ============ */
+.glass-stage {
+  background: linear-gradient(135deg, #f7ecd9 0%, #f4dcd8 50%, #eae4d2 100%);
+  border-color: rgba(120, 90, 40, 0.25);
+}
+.glass-glow-a { background-color: rgba(201, 161, 58, 0.35); }
+.glass-glow-b { background-color: rgba(176, 82, 107, 0.28); }
+.glass-glow-c { background-color: rgba(255, 255, 255, 0.55); }
+.glass-glow-d { background-color: rgba(122, 74, 42, 0.28); }
+.glass-card {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.55),
+    rgba(255, 255, 255, 0.22) 55%,
+    rgba(255, 255, 255, 0.08)
+  );
+  box-shadow:
+    0 8px 40px rgba(90, 60, 40, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 0 50px -12px rgba(255, 255, 255, 0.5);
+}
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.95);
+}
+.glass-title { color: #2e2620; }
+.glass-desc { color: rgba(46, 38, 32, 0.72); }
+.glass-faint { color: rgba(46, 38, 32, 0.5); }
+.glass-ghost { color: rgba(46, 38, 32, 0.1); }
+.glass-chip {
+  background: rgba(255, 255, 255, 0.45);
+  border-color: rgba(120, 90, 40, 0.3);
+}
+
+[data-theme="dark"] .glass-stage {
+  background: #0c0a08;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+[data-theme="dark"] .glass-glow-a { background-color: rgba(176, 122, 58, 0.3); }
+[data-theme="dark"] .glass-glow-b { background-color: rgba(232, 194, 106, 0.2); }
+[data-theme="dark"] .glass-glow-c { background-color: rgba(255, 255, 255, 0.1); }
+[data-theme="dark"] .glass-glow-d { background-color: rgba(122, 74, 42, 0.25); }
+[data-theme="dark"] .glass-card {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.1) 55%,
+    rgba(255, 255, 255, 0.03)
+  );
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 0 50px -12px rgba(255, 255, 255, 0.25);
+}
+[data-theme="dark"] .glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+[data-theme="dark"] .glass-title { color: #fff; }
+[data-theme="dark"] .glass-desc { color: rgba(255, 255, 255, 0.7); }
+[data-theme="dark"] .glass-faint { color: rgba(255, 255, 255, 0.5); }
+[data-theme="dark"] .glass-ghost { color: rgba(255, 255, 255, 0.1); }
+[data-theme="dark"] .glass-chip {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+[data-theme="red"] .glass-stage {
+  background: linear-gradient(135deg, #220b0c 0%, #3d1215 50%, #180a0c 100%);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+[data-theme="red"] .glass-glow-a { background-color: rgba(230, 57, 70, 0.3); }
+[data-theme="red"] .glass-glow-b { background-color: rgba(232, 194, 106, 0.18); }
+[data-theme="red"] .glass-glow-c { background-color: rgba(255, 255, 255, 0.12); }
+[data-theme="red"] .glass-glow-d { background-color: rgba(163, 18, 32, 0.3); }
+[data-theme="red"] .glass-card {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.1) 55%,
+    rgba(255, 255, 255, 0.03)
+  );
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 0 50px -12px rgba(255, 255, 255, 0.25);
+}
+[data-theme="red"] .glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+[data-theme="red"] .glass-title { color: #fff; }
+[data-theme="red"] .glass-desc { color: rgba(255, 255, 255, 0.7); }
+[data-theme="red"] .glass-faint { color: rgba(255, 255, 255, 0.5); }
+[data-theme="red"] .glass-ghost { color: rgba(255, 255, 255, 0.1); }
+[data-theme="red"] .glass-chip {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
 }

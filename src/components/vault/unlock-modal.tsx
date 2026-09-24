@@ -9,10 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useVaultStore } from "@/store/useVaultStore";
 
-/**
- * Beautiful password gate for the hidden vault section.
- * Posts to the Express backend; the JWT lives in an httpOnly cookie.
- */
+
 export function UnlockModal() {
   const t = useTranslations("Vault");
   const { modalOpen, closeModal, unlock, busy, error, status } = useVaultStore();
@@ -29,7 +26,6 @@ export function UnlockModal() {
     return () => window.clearTimeout(id);
   }, [modalOpen]);
 
-  // Brief success flash, then close — images already swapped globally.
   React.useEffect(() => {
     if (!justUnlocked) return;
     const id = window.setTimeout(() => {
@@ -42,7 +38,6 @@ export function UnlockModal() {
     e.preventDefault();
     if (!password || busy) return;
     const ok = await unlock(password);
-    // Replay the shake animation on every failed attempt.
     if (!ok) setShakeKey((k) => k + 1);
   };
 
