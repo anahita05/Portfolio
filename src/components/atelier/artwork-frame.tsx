@@ -101,11 +101,15 @@ export function ArtworkFrame({
         {/* darken the image so the overlaid text stays readable */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/10" />
 
-        {/* full details — directly on the picture, no box */}
-        <figcaption className="absolute inset-x-0 bottom-0 p-5">
-          <Badge variant="gold" className="w-fit shadow-lg">
+        {/* badge — top right of the card */}
+        <div className="absolute top-4 right-4">
+          <Badge variant="gold" className="shadow-lg">
             ✦ {medium}
           </Badge>
+        </div>
+
+        {/* full details — directly on the picture, no box */}
+        <figcaption className="absolute inset-x-0 bottom-0 p-5">
           <h3 className="font-display mt-2 text-xl leading-tight font-semibold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
             {title}
           </h3>

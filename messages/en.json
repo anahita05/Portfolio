@@ -165,7 +165,9 @@
     "formMsg": "Message",
     "formMsgPh": "Tell me about the role or project…",
     "formSubmit": "Send message",
+    "formSending": "Sending…",
     "formSent": "Received ✦ thank you",
+    "formError": "Failed — email me directly instead",
     "formNote": "Replies within 24 hours ♡"
   },
   "About": {

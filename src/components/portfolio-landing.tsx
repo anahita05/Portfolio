@@ -362,12 +362,15 @@ export function PortfolioLanding() {
                   />
                   {/* darken the image so the overlaid text stays readable */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/10" />
-                  {/* full details — directly on the picture, no box */}
-                  <figcaption className="absolute inset-x-0 bottom-0 p-5">
-                    <Badge variant="pastel" className="w-fit shadow-lg">
+                  {/* badge — top right of the card */}
+                  <div className="absolute top-4 right-4">
+                    <Badge variant="pastel" className="shadow-lg">
                       {f.tag}
                     </Badge>
-                    <h3 className="font-display mt-2 text-2xl leading-tight font-semibold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+                  </div>
+                  {/* full details — directly on the picture, no box */}
+                  <figcaption className="absolute inset-x-0 bottom-0 p-5">
+                    <h3 className="font-display text-2xl leading-tight font-semibold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                       {f.title}
                     </h3>
                     <p className="mt-1 text-sm leading-7 text-white/85 drop-shadow-[0_1px_6px_rgba(0,0,0,0.8)]">

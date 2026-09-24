@@ -161,7 +161,9 @@
     "formMsg": "پیام",
     "formMsgPh": "درباره نقش یا پروژه بگو…",
     "formSubmit": "ارسال پیام",
+    "formSending": "در حال ارسال…",
     "formSent": "رسید ✦ ممنون",
+    "formError": "نشد — مستقیم ایمیل بزن",
     "formNote": "جواب در ۲۴ ساعت ♡"
   },
   "About": {
