@@ -488,6 +488,19 @@ html {
   filter: saturate(1.08) contrast(1.04);
 }
 
+/* Hero main cutout only: transparent PNG must never show a square
+   hover box behind it. Cards (.group figures, polaroids) keep hover. */
+.hero-main-cutout,
+.hero-main-cutout > div {
+  overflow: visible;
+  background: transparent;
+}
+.hero-main-cutout img,
+.hero-main-cutout:hover img,
+.group:hover .hero-main-cutout img {
+  transform: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .atelier-wash,
   .blob,

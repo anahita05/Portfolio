@@ -215,9 +215,9 @@ export function PortfolioLanding() {
                 loading="eager"
                 motionStyle={{ y: artY }}
                 hoverZoom={false}
-                wrapperClassName="relative z-10 h-auto w-full bg-transparent"
-                imgClassName="h-auto bg-transparent object-contain"
-                skeletonClassName="rounded-[3rem]"
+                wrapperClassName="hero-main-cutout relative z-10 h-auto w-full overflow-visible bg-transparent"
+                imgClassName="h-auto bg-transparent object-contain [transform:none!important]"
+                skeletonClassName="rounded-[3rem] bg-transparent animate-none"
               />
 
               {/* escaping polaroid: close-up */}
@@ -561,7 +561,7 @@ export function PortfolioLanding() {
               {tx("contactDesc")}
             </p>
             <div className="mt-6 space-y-2.5">
-              {[tx("bullet1"), tx("bullet2"), tx("bullet3")].map((b) => (
+              {[tx("bullet1"), tx("bullet2")].map((b) => (
                 <p
                   key={b}
                   className="flex items-center gap-2 rounded-2xl border border-white/70 bg-white/70 px-4 py-2.5 text-sm font-semibold shadow-sm backdrop-blur"
@@ -569,6 +569,14 @@ export function PortfolioLanding() {
                   <Sparkles className="h-4 w-4 text-[#c9a13a]" /> {b}
                 </p>
               ))}
+              <a
+                href="https://t.me/Sllp_anna"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-2xl border border-white/70 bg-white/70 px-4 py-2.5 text-sm font-semibold shadow-sm backdrop-blur transition hover:-translate-y-0.5"
+              >
+                <Send className="h-4 w-4 text-[#c9a13a]" /> {tx("bullet3")}
+              </a>
             </div>
             <Separator className="my-6" />
             <Button asChild size="lg" className="rounded-full">
