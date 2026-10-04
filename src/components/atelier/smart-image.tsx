@@ -88,16 +88,17 @@ export function SmartImage({
   hoverZoom = true,
 }: SmartImageProps) {
   const theme = useThemeStore((s) => s.theme);
-  // Global unlock flag: locked visitors see -hide, unlocked clients see -main.
+  // Global unlock flag: locked visitors see -main, unlocked clients see -hide.
   const isUnlocked = useVaultStore((s) => s.status === "unlocked");
-  const useHide = vaultSwap && !isUnlocked;
 
   // If the hide file 404s (no -hide version), fall back to the main version.
   const [vaultFallback, setVaultFallback] = React.useState(false);
   useResetOnKey(`${src}|${srcDark ?? ""}|${srcRed ?? ""}`, () => {
     if (vaultFallback) setVaultFallback(false);
   });
-  const hideActive = useHide && !vaultFallback;
+  // Locked (normal) -> -main pics; unlocked (restricted area) -> -hide pics.
+  // vaultSwap=false opts out (always main).
+  const showBase = !vaultSwap || !isUnlocked || vaultFallback;
 
   // One model per theme layer: base src -> vault-resolved src.
   // Every usage of the light hero cutout gets themed cutouts automatically.
@@ -112,7 +113,7 @@ export function SmartImage({
     return {
       id,
       base,
-      src: base ? resolveVaultSrc(base, hideActive) : undefined,
+      src: base ? resolveVaultSrc(base, showBase) : undefined,
       overlay: id !== "light",
     };
   });
@@ -124,15 +125,22 @@ export function SmartImage({
     dark: true,
     red: true,
   });
-  // Reset the skeleton whenever a resolved (possibly swapped) src changes.
+  // NOTE: on a vault swap (locked <-> unlocked) the already-loaded flags are
+  // preserved so the current bitmap stays visible until the browser swaps in
+  // the new twin natively. Resetting to unloaded would hide the picture behind
+  // a skeleton and wait for a fresh load event for the new twin; on mobile
+  // that event can be stale/missed, sticking the skeleton until a refresh or
+  // theme change. (A swap never adds/removes layers — presence depends only on
+  // the static bases — so only absent layers are forced to loaded here.)
+  // First mount still starts unloaded via the initial state above.
   useResetOnKey(
     layers.map((l) => l.src ?? "").join("|"),
     () => {
-      const fresh = { light: false, dark: true, red: true } as Record<ArtLayer, boolean>;
+      const next = { ...loaded };
       for (const l of layers) {
-        if (l.id !== "light") fresh[l.id] = !l.src;
+        if (!l.src) next[l.id] = true;
       }
-      setLoaded(fresh);
+      setLoaded(next);
     },
   );
 

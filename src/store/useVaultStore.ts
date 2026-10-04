@@ -2,6 +2,7 @@
 
 import { create } from "zustand";
 import { vaultApi, type SecretVault } from "@/lib/vault-api";
+import { warmVaultImages } from "@/lib/vault-images";
 
 export type VaultStatus = "checking" | "locked" | "unlocked";
 
@@ -44,6 +45,9 @@ export const useVaultStore = create<VaultState>()((set, get) => ({
 
   unlock: async (password: string) => {
     set({ busy: true, error: null });
+    // Start downloading the hide twins while the password is verified so
+    // the image swap after unlock feels instant (matters on mobile).
+    warmVaultImages();
     try {
       await vaultApi.unlock(password);
       set({ status: "unlocked", vault: null, busy: false });
