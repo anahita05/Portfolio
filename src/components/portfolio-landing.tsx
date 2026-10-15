@@ -316,7 +316,7 @@ export function PortfolioLanding() {
               tag: tx("featTag1"),
               title: tx("feat1T"),
               desc: tx("feat1D"),
-              img: "object-top scale-100",
+              grad: "from-[#2e1f16] via-[#6b3d2e] to-[#120c09]",
               links: [
                 { kind: "live" as const, url: CAKE_SHOP_LIVE_URL },
                 { kind: "code" as const, url: CAKE_SHOP_GITHUB_URL },
@@ -326,7 +326,7 @@ export function PortfolioLanding() {
               tag: tx("featTag2"),
               title: tx("feat2T"),
               desc: tx("feat2D"),
-              img: "object-top scale-[1.9]",
+              grad: "from-[#0f1f35] via-[#2c4a7a] to-[#080d18]",
               links: [
                 { kind: "live" as const, url: TWEETER_LIVE_URL },
                 { kind: "code" as const, url: TWEETER_GITHUB_URL },
@@ -336,7 +336,7 @@ export function PortfolioLanding() {
               tag: tx("featTag3"),
               title: tx("feat3T"),
               desc: tx("feat3D"),
-              img: "object-right scale-[1.7]",
+              grad: "from-[#10231a] via-[#2e5a3e] to-[#090f0c]",
               links: [
                 {
                   kind: "code" as const,
@@ -354,11 +354,19 @@ export function PortfolioLanding() {
             <Reveal key={f.title} delay={i * 0.1}>
               <figure className="group relative overflow-hidden rounded-[2rem] border border-white/70 shadow-[0_25px_50px_-20px_rgba(90,60,50,0.4)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-20px_rgba(120,70,90,0.4)]">
                 <div className="relative aspect-4/5 overflow-hidden">
-                  <SmartImage
-                    src={HERO_IMG}
-                    alt={f.title}
-                    wrapperClassName="absolute inset-0"
-                    imgClassName={`transition-transform duration-700 ${f.img}`}
+                  {/* gradient cover instead of photo */}
+                  <div
+                    aria-hidden="true"
+                    className={`absolute inset-0 bg-gradient-to-br ${f.grad} transition-transform duration-700 group-hover:scale-[1.04]`}
+                  />
+                  {/* soft decorative shapes */}
+                  <div
+                    aria-hidden="true"
+                    className="absolute -top-16 -right-16 h-56 w-56 rounded-full bg-white/10 blur-2xl"
+                  />
+                  <div
+                    aria-hidden="true"
+                    className="absolute -bottom-20 -left-16 h-64 w-64 rounded-full bg-black/40 blur-2xl"
                   />
                   {/* darken the image so the overlaid text stays readable */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/10" />
