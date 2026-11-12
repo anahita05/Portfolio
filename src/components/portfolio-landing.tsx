@@ -49,6 +49,7 @@ import {
   portfolioFallback,
 } from "@/data/portfolio";
 import { useThemeStore } from "@/store/useThemeStore";
+import { useRichMotion } from "@/lib/use-rich-motion";
 
 const breakdownIcons = [Gem, Eye, Shirt, Feather, Scan, Link2];
 const serviceIcons = [Brush, Layers, Gem, Palette, Eye, Feather];
@@ -81,6 +82,8 @@ export function PortfolioLanding() {
   // Accent stays readable on glass: deepen it on the light stage, lift it on dark stages.
   const accentMix = theme === "light" ? "75%, #2e2620" : "60%, white";
   const reduce = useReducedMotion();
+  // Scroll parallax is JS-driven (runs on every scroll frame) — desktop only.
+  const rich = useRichMotion();
   const heroRef = React.useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -89,6 +92,8 @@ export function PortfolioLanding() {
   const artY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 90]);
   const cardAY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -60]);
   const cardBY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -110]);
+  const cardAStyle = rich ? { y: cardAY } : undefined;
+  const cardBStyle = rich ? { y: cardBY } : undefined;
 
   const skillAccents = [
     "#c9a13a",
@@ -129,8 +134,8 @@ export function PortfolioLanding() {
         <div className="grid items-center gap-12 lg:grid-cols-[1.02fr_0.98fr]">
           {/* copy */}
           <motion.div
-            initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <p className="handwritten flex items-center gap-2 text-sm text-primary-600">
@@ -204,8 +209,8 @@ export function PortfolioLanding() {
           {/* art composition — overlapping, parallax, floating */}
           <div className="relative mx-auto w-full max-w-120">
             <motion.div
-              initial={{ opacity: 0, scale: 0.94, filter: "blur(10px)" }}
-              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              initial={{ opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className="relative"
             >
@@ -213,7 +218,7 @@ export function PortfolioLanding() {
                 src={HERO_IMG}
                 alt="fallen angel hero"
                 loading="eager"
-                motionStyle={{ y: artY }}
+                motionStyle={rich ? { y: artY } : undefined}
                 hoverZoom={false}
                 wrapperClassName="hero-main-cutout relative z-10 h-auto w-full overflow-visible bg-transparent"
                 imgClassName="h-auto bg-transparent object-contain [transform:none!important]"
@@ -222,7 +227,7 @@ export function PortfolioLanding() {
 
               {/* escaping polaroid: close-up */}
               <motion.div
-                style={{ y: cardAY }}
+                style={cardAStyle}
                 className="animate-float-soft absolute top-6 -left-4 z-20 w-32 rotate-[-7deg] overflow-hidden rounded-3xl border-4 border-white bg-white shadow-xl sm:-left-10 sm:w-36"
               >
                 <SmartImage
@@ -238,7 +243,7 @@ export function PortfolioLanding() {
 
               {/* escaping card: wing */}
               <motion.div
-                style={{ y: cardBY }}
+                style={cardBStyle}
                 className="animate-float-soft absolute right-0 bottom-24 z-20 w-36 rotate-[5deg] overflow-hidden rounded-3xl border-4 border-white bg-white shadow-xl sm:-right-6 sm:w-40"
                 aria-hidden="false"
               >
@@ -255,7 +260,7 @@ export function PortfolioLanding() {
 
               {/* floating badges */}
               <motion.div
-                style={{ y: cardAY }}
+                style={cardAStyle}
                 className="absolute -top-2 right-4 z-20 rotate-3 rounded-2xl border border-white/70 bg-white/85 px-4 py-2.5 shadow-lg backdrop-blur"
               >
                 <p className="flex items-center gap-1.5 text-xs font-bold">
@@ -266,7 +271,7 @@ export function PortfolioLanding() {
                 </p>
               </motion.div>
               <motion.div
-                style={{ y: cardBY }}
+                style={cardBStyle}
                 className="absolute bottom-8 -left-2 z-20 rotate-[-4deg] rounded-2xl border border-white/70 bg-white/85 px-4 py-2.5 shadow-lg backdrop-blur sm:-left-8"
               >
                 <p className="flex items-center gap-1.5 text-xs font-bold">
@@ -362,11 +367,11 @@ export function PortfolioLanding() {
                   {/* soft decorative shapes */}
                   <div
                     aria-hidden="true"
-                    className="absolute -top-16 -right-16 h-56 w-56 rounded-full bg-white/10 blur-2xl"
+                    className="absolute -top-16 -right-16 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.14),transparent_70%)]"
                   />
                   <div
                     aria-hidden="true"
-                    className="absolute -bottom-20 -left-16 h-64 w-64 rounded-full bg-black/40 blur-2xl"
+                    className="absolute -bottom-20 -left-16 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(0,0,0,0.5),transparent_70%)]"
                   />
                   {/* darken the image so the overlaid text stays readable */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/10" />

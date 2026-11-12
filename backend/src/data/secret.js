@@ -11,7 +11,7 @@ export const secretContent = {
       meta: "unlisted · e-commerce experiment",
       description:
         "A dark, gold-trimmed checkout concept with optimistic cart updates and skeleton states — built to test conversion on high-consideration purchases.",
-      image: "/images/main-dark.png",
+      image: "/images/main-dark.webp",
       tags: ["react", "zustand", "dark UI"],
       year: "2025",
     },
@@ -21,7 +21,7 @@ export const secretContent = {
       meta: "unlisted · marketing page",
       description:
         "A bold single-product launch page with scroll-driven storytelling, sticky buy bar and A/B-tested hero variants.",
-      image: "/images/main-red.png",
+      image: "/images/main-red.webp",
       tags: ["next.js", "framer-motion", "CRO"],
       year: "2025",
     },
@@ -31,7 +31,7 @@ export const secretContent = {
       meta: "work in progress · design system",
       description:
         "The private UI kit behind this portfolio: glass cards, pixel-shimmer frames, theme engine and bilingual primitives — documented in Storybook.",
-      image: "/images/main.png",
+      image: "/images/main.webp",
       tags: ["typescript", "tailwind", "a11y"],
       year: "2026",
     },

@@ -280,7 +280,9 @@ html {
       transparent 65%
     ),
     linear-gradient(115deg, #fffdf7 0%, #faf3e3 30%, #f6ecdf 55%, #fbf7ee 100%);
-  background-size: 220% 220%;
+  /* Perf: drift with a compositor-only transform instead of animating
+     background-position (which repainted the whole screen every frame). */
+  will-change: transform;
   animation: atelier-wash-drift 24s ease-in-out infinite;
 }
 
@@ -306,9 +308,9 @@ html {
 .blob {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(60px);
+  /* Perf: no filter: blur() — the radial gradients below already fade softly,
+     and a 60px blur on six ~30rem layers was a big GPU cost (esp. on phones). */
   opacity: 0.55;
-  will-change: transform;
 }
 
 .blob-cream {
@@ -399,8 +401,9 @@ html {
 }
 
 .atelier-grain {
+  /* Perf: no mix-blend-mode — blending a full-screen fixed layer forced a
+     re-composite of everything underneath on every scroll frame. */
   opacity: 0.5;
-  mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
 }
 
@@ -420,14 +423,12 @@ html {
 }
 
 @keyframes atelier-wash-drift {
-  0% {
-    background-position: 0% 30%;
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
   }
   50% {
-    background-position: 100% 70%;
-  }
-  100% {
-    background-position: 0% 30%;
+    transform: translate3d(-6%, 4%, 0);
   }
 }
 
@@ -510,18 +511,61 @@ html {
   }
 }
 
-/* ============ Mobile perf: phones choke on full-screen repaints ============
-   Pause the drifting background wash/blobs/stars on small screens and
-   lighten the heavy frosted-glass blur. The hero polaroid float is kept. */
-@media (max-width: 640px) {
+/* ============ Mobile / touch perf ============
+   Phones and tablets choke on full-screen repaints and on backdrop-filter
+   (every frosted element re-blurs what is behind it on every scroll frame).
+   On touch devices and narrower screens:
+   - the background wash/blobs/stars stand still,
+   - grain + half the stars are dropped,
+   - frosted glass becomes plain translucent fill (no backdrop blur),
+   - big soft shadows are lightened. */
+@media (hover: none), (pointer: coarse), (max-width: 1023px) {
   .atelier-wash,
   .blob,
   .atelier-star {
     animation: none !important;
+    will-change: auto;
+  }
+  .atelier-grain,
+  .atelier-star:nth-child(even) {
+    display: none;
+  }
+  /* Only the standard property: the CSS minifier collapses a prefixed +
+     unprefixed pair down to the -webkit- one, which Chrome ignores.
+     (It re-adds the -webkit- prefix for Safari on its own.) */
+  *,
+  *::before,
+  *::after {
+    backdrop-filter: none !important;
   }
   .glass-card {
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.72),
+      rgba(255, 255, 255, 0.5) 55%,
+      rgba(255, 255, 255, 0.35)
+    );
+    box-shadow:
+      0 8px 24px rgba(90, 60, 40, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+  [data-theme="dark"] .glass-card,
+  [data-theme="red"] .glass-card {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.16),
+      rgba(255, 255, 255, 0.08) 55%,
+      rgba(0, 0, 0, 0.25)
+    );
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+  /* No hover on touch: skip the hover zoom/filter on images. */
+  .group:hover img,
+  .group:hover > img {
+    transform: none;
+    filter: none;
   }
 }
 
@@ -598,7 +642,7 @@ html {
 [data-theme="dark"] .blob-lavender,
 [data-theme="dark"] .blob-sky {
   opacity: 0.14;
-  filter: blur(60px) sepia(0.6) saturate(0.7);
+  filter: sepia(0.6) saturate(0.7);
 }
 
 [data-theme="dark"] .atelier-star {
@@ -612,8 +656,7 @@ html {
 }
 
 [data-theme="dark"] .atelier-grain {
-  mix-blend-mode: screen;
-  opacity: 0.35;
+  opacity: 0.25;
 }
 
 [data-theme="dark"] .paper-grain {

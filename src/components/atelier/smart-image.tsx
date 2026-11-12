@@ -88,6 +88,11 @@ export function SmartImage({
   hoverZoom = true,
 }: SmartImageProps) {
   const theme = useThemeStore((s) => s.theme);
+  // Perf: only mount (= download + decode) a themed layer once its theme has
+  // actually been shown. Previously every SmartImage fetched all three themed
+  // artworks up front, even though only one is ever visible.
+  const [seenLayers, setSeenLayers] = React.useState<ArtLayer[]>([theme]);
+  if (!seenLayers.includes(theme)) setSeenLayers([...seenLayers, theme]);
   // Global unlock flag: locked visitors see -main, unlocked clients see -hide.
   const isUnlocked = useVaultStore((s) => s.status === "unlocked");
 
@@ -121,9 +126,12 @@ export function SmartImage({
 
   const hideSwapped = layers.some((l) => l.src && l.src !== l.base);
   const [loaded, setLoaded] = React.useState<Record<ArtLayer, boolean>>({
+    // Overlays start unloaded: they now mount lazily on first theme switch,
+    // so they must wait for their own load event before fading in.
+    // (Absent layers are forced to loaded by the reset below.)
     light: false,
-    dark: true,
-    red: true,
+    dark: false,
+    red: false,
   });
   // NOTE: on a vault swap (locked <-> unlocked) the already-loaded flags are
   // preserved so the current bitmap stays visible until the browser swaps in
@@ -184,10 +192,13 @@ export function SmartImage({
     markLoaded("light");
   }, [hideSwapped, markLoaded]);
 
-  const visibleLoaded = loaded[theme];
+  const visibleLoaded = loaded[theme] || loaded.light;
   const opacityFor = (l: LayerModel): string => {
     if (!l.src) return "hidden";
-    const active = theme === l.id;
+    // Keep the base artwork on screen until the newly mounted theme layer
+    // has finished loading, so the first theme switch never flashes empty.
+    const active =
+      theme === l.id || (l.id === "light" && !loaded[theme]);
     return active ? (loaded[l.id] ? "opacity-100" : "opacity-0") : "opacity-0";
   };
 
@@ -210,7 +221,8 @@ export function SmartImage({
       )}
       {layers.map(
         (l) =>
-          l.src && (
+          l.src &&
+          (!l.overlay || seenLayers.includes(l.id)) && (
             <img
               key={l.id}
               ref={refCallbacks[l.id]}
@@ -218,6 +230,8 @@ export function SmartImage({
               alt={l.overlay ? (theme === l.id ? alt : "") : hasAltLayer ? "" : alt}
               aria-hidden={l.overlay ? theme !== l.id : hasAltLayer ? true : ariaHidden}
               loading={loading}
+              decoding="async"
+              fetchPriority={loading === "eager" && theme === l.id ? "high" : undefined}
               onLoad={() => markLoaded(l.id)}
               onError={l.overlay ? () => markLoaded(l.id) : handleBaseError}
               className={cn(

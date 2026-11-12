@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { CodeXml, ExternalLink, Globe } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { type GalleryItem } from "@/data/atelier";
@@ -43,11 +42,10 @@ export function ArtworkFrame({
   const t = treatmentStyle[item.treatment];
 
   return (
-    <motion.figure
-      layout
-      initial={{ opacity: 0, y: 26, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.5, delay: (index % 6) * 0.06 }}
+    // Plain <figure>: the gallery is already faded in by <Reveal>, and the old
+    // per-card `layout` + mount animation re-measured every card on re-render.
+    <figure
+      data-index={index}
       className="group relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/60 shadow-[0_18px_45px_-20px_rgba(80,60,40,0.35)] backdrop-blur transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-20px_rgba(120,70,90,0.4)]"
     >
       {/* gradient cover instead of photo */}
@@ -62,11 +60,11 @@ export function ArtworkFrame({
         {/* soft decorative shapes */}
         <div
           aria-hidden="true"
-          className="absolute -top-14 -right-14 h-52 w-52 rounded-full bg-white/10 blur-2xl"
+          className="absolute -top-14 -right-14 h-52 w-52 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.14),transparent_70%)]"
         />
         <div
           aria-hidden="true"
-          className="absolute -bottom-16 -left-14 h-60 w-60 rounded-full bg-black/40 blur-2xl"
+          className="absolute -bottom-16 -left-14 h-60 w-60 rounded-full bg-[radial-gradient(circle,rgba(0,0,0,0.5),transparent_70%)]"
         />
         {/* darken the image so the overlaid text stays readable */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/10" />
@@ -118,6 +116,6 @@ export function ArtworkFrame({
             ) : null}
         </figcaption>
       </div>
-    </motion.figure>
+    </figure>
   );
 }

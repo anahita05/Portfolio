@@ -33,7 +33,7 @@ export type ServiceItem = {
   priceKey: string;
 };
 
-export const heroImage = "/images/main.png";
+export const heroImage = "/images/main.webp";
 
 /** Project links — single source of truth lives in data/atelier. */
 export {
