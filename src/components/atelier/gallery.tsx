@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { galleryItems } from "@/data/atelier";
 import { ArtworkFrame } from "./artwork-frame";
 
@@ -11,7 +10,7 @@ export function Gallery({
 }) {
   return (
     <div>
-      <motion.div layout className="mt-8 grid items-start gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid items-start gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {galleryItems.map((item, i) => (
           <ArtworkFrame
             key={item.id}
@@ -25,7 +24,7 @@ export function Gallery({
             codeLabel={tx("viewCode")}
           />
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }

@@ -20,7 +20,7 @@ export function Footer() {
       >
         <div className="relative">
           <Image
-            src="/images/light-sit.png"
+            src="/images/light-sit.webp"
             alt=""
             width={360}
             height={540}

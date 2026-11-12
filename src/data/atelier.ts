@@ -166,11 +166,11 @@ export const galleryItems: GalleryItem[] = [
   },
 ];
 
-export const HERO_IMG = "/images/main.png";
-export const HERO_IMG_DARK = "/images/main-dark.png";
-export const HERO_IMG_RED = "/images/main-red.png";
+export const HERO_IMG = "/images/main.webp";
+export const HERO_IMG_DARK = "/images/main-dark.webp";
+export const HERO_IMG_RED = "/images/main-red.webp";
 
 /** Vault counterparts: shown globally once the password is verified. */
-export const HERO_IMG_HIDE = "/images/hide-light.png";
-export const HERO_IMG_HIDE_DARK = "/images/hide-black.png";
-export const HERO_IMG_HIDE_RED = "/images/hide-red.png";
+export const HERO_IMG_HIDE = "/images/hide-light.webp";
+export const HERO_IMG_HIDE_DARK = "/images/hide-black.webp";
+export const HERO_IMG_HIDE_RED = "/images/hide-red.webp";

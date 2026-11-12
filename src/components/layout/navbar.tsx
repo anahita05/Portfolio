@@ -31,15 +31,12 @@ export function Navbar() {
   ];
 
   React.useEffect(() => {
-    const onScroll = () => {
-      const ids = [
-        "top",
-        "featured",
-        "gallery",
-        "about",
-        "services",
-        "contact",
-      ];
+    const ids = ["top", "featured", "gallery", "about", "services", "contact"];
+    // Perf: measure at most once per frame (scroll fires many times per frame
+    // on phones, and each pass forced 6 layout reads).
+    let frame = 0;
+    const update = () => {
+      frame = 0;
       let current = "#top";
       for (const id of ids) {
         const el = document.getElementById(id);
@@ -47,9 +44,15 @@ export function Navbar() {
       }
       setActive(current);
     };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
+    update();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
 
   /** Vault box: locked -> open password modal; unlocked -> logout swaps back to main. */

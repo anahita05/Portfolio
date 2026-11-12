@@ -8,7 +8,7 @@ Live sections: Hero → Featured work → Project gallery → About → Skills �
 
 - Bilingual `fa` / `en` with RTL/LTR switching (`next-intl`, locale-prefixed routes `/fa`, `/en`)
 - 3 themes: `light` / `dark` / `red` via `data-theme` + Zustand + localStorage (`app-theme-storage`), no-flash `ThemeInitializer`
-- Hero art composition with parallax + floating cards (`public/images/main.png`, themed counterparts `main-dark.png` / `main-red.png` with slow crossfade)
+- Hero art composition with parallax + floating cards (`public/images/main.webp`, themed counterparts `main-dark.png` / `main-red.png` with slow crossfade)
 - Featured projects (Cake Shop e-commerce, Tweeter full-stack clone, Quera bootcamp team projects)
 - Filterable project gallery (Front-End / Full-Stack / Team / UI)
 - About + Skills + Contact with `mailto:` CTA (`anahita.sllp2000@gmail.com`) and mailto-based contact form
@@ -78,12 +78,12 @@ src/
 messages/
 ├── en.json
 └── fa.json
-public/images/main.png
+public/images/main.webp
 ```
 
 ## Customization
 
-- Hero / gallery image: replace `public/images/main.png` (keep transparency for best look, `HERO_IMG` in `src/data/atelier.ts`); themed counterparts are `main-dark.png` (`HERO_IMG_DARK`) and `main-red.png` (`HERO_IMG_RED`)
+- Hero / gallery image: replace `public/images/main.webp` (keep transparency for best look, `HERO_IMG` in `src/data/atelier.ts`); themed counterparts are `main-dark.png` (`HERO_IMG_DARK`) and `main-red.png` (`HERO_IMG_RED`)
 - Texts: edit `messages/en.json` + `messages/fa.json` → `Portfolio` namespace. `portfolioFallback` auto-syncs from `en.json`, missing keys fall back gracefully via `useTx()` + `t.has()` guard
 - Email / links: `contactDesc`, `bullet1-3` in messages + `mailto:` in `src/components/portfolio-landing.tsx` and `src/components/atelier/contact-form.tsx` (currently `anahita.sllp2000@gmail.com`, `github.com/anahita05`)
 - Themes: CSS variables for `[data-theme="light"|"dark"|"red"]` in `src/app/globals.css`
